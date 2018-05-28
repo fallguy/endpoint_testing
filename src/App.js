@@ -9,11 +9,12 @@ import { withAuthenticator } from 'aws-amplify-react';
 Amplify.configure(aws_exports);
 
 class App extends Component {
-  state = { survey: [] };
+  state = { survey: [], categories: {data:[]}, widgets: {data:[]} };
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
     let categories = await API.get('surveysCRUD', `/surveys/categories`); 
-    this.setState({ survey, categories });
+    let widgets = await API.get('surveysCRUD', `/surveys/widgets`); 
+    this.setState({ survey, categories,widgets });
   }
   async saveSurvey(event) {
     event.preventDefault();
@@ -21,8 +22,9 @@ class App extends Component {
     const { survey } = this.state;
     const surveyId = survey.length + 1;
     const question = this.refs.newQuestion.value;
-    
-    const newSurvey = { "id": surveyId.toString(), "question": question, "category": "happiness", "widgets": 'slider' };
+    const category = this.refs.newCategory.value;
+    const widget = this.refs.newWidget.value;
+    const newSurvey = { "id": surveyId.toString(), "question": question, "category": category, "widgets": widget };
     await API.post('surveysCRUD', '/surveys', { body: newSurvey });
     survey.push(newSurvey);
     this.refs.newQuestion.value = '';
@@ -32,6 +34,13 @@ class App extends Component {
     console.log(this.state)
     let surveys = this.state.survey.map(({id, question,widgets, category}) => {
       return <li key={id}>question:{question}, widget: {widgets},  category:{category}</li>;
+    });
+
+    let widgets = this.state.widgets.data.map((index) => {
+      return <option key={index}>{index}</option>
+    });
+    let categories = this.state.categories.data.map((index) => {
+      return <option key={index}>{index}</option>
     });
 
     return (
@@ -46,6 +55,14 @@ class App extends Component {
         </ul>
         <form onSubmit={this.saveSurvey.bind(this)}>
           <input ref="newQuestion" type="text" placeholder="Question?" />
+          <select ref="newWidget">
+          <option>Select a widget</option>
+            {widgets}
+          </select>
+          <select ref="newCategory">
+          <option>Select a category</option>
+            {categories}
+          </select>
           <input type="submit" value="Save" />
         </form>
       </div>
