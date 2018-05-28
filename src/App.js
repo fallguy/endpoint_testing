@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Surveys from './Components/Surveys';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -15,6 +16,14 @@ class App extends Component {
     
     this.setState({ survey });
   }
+
+  handleDeleteSurvey(id){
+    let survey = this.state.survey;
+    let index = survey.findIndex(x => id === id);
+    survey.splice(index, 1);
+    this.setState({survey:survey});
+  }
+
   render() {
     console.log(this.state)
     let surveys = this.state.survey.map(({id, question}) => {
@@ -28,7 +37,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <ul>
-          {surveys}
+          <Surveys surveys={this.state.survey} onDelete={this.handleDeleteSurvey.bind(this)}/>
         </ul>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
