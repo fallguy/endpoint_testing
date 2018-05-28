@@ -70,7 +70,12 @@ app.get('/surveys', function(req, res) {
     }
   });
 });
-
+app.get('/surveys/categories', function(req, res) {
+  res.json({data: ['happiness']})
+});
+app.get('/surveys/widgets', function(req, res) {
+  res.json({data: ['mood-slider']})
+});
 
 /********************************
  * HTTP Get method for list objects *

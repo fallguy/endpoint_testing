@@ -1,4 +1,6 @@
 --- !com.amazonaws.mobilehub.v0.Project 
+apps:
+  web: !com.amazonaws.mobilehub.v0.AppDO {}
 features:
   cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
     components:
@@ -9,31 +11,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /surveys: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180527210606.zip
+            codeFilename: uploads/surveys-20180527225751.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: R/Ro3lb/qanffCCMS8W26EMqOZvT58V6Jvr2Glz0rqo=
+            hashcode: msPxe4naImiD0JxWGAMzm7d+zSx+oeeoXUiZNuXPEUU=
             memorySize: '128'
-            modified: '2018-05-28T04:06:46.680+0000'
+            modified: '2018-05-28T05:58:30.573+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: 1MkTzbsYqqUbJbyzt9PZ07MZk55PYtgR
+            version: eTbTA0CQrR2NhQ5KRtU_8uApKcPLD1Zm
           '/surveys/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180527210606.zip
+            codeFilename: uploads/surveys-20180527225751.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: R/Ro3lb/qanffCCMS8W26EMqOZvT58V6Jvr2Glz0rqo=
+            hashcode: msPxe4naImiD0JxWGAMzm7d+zSx+oeeoXUiZNuXPEUU=
             memorySize: '128'
-            modified: '2018-05-28T04:06:46.680+0000'
+            modified: '2018-05-28T05:58:30.573+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: 1jcjcGHsTke15OwZPfac_ZnkxbD3o5qJ
+            version: hVgapYlo46IsDcGY4b12cVW3hjywkqfc
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true

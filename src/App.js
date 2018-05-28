@@ -12,13 +12,26 @@ class App extends Component {
   state = { survey: [] };
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
+    let categories = await API.get('surveysCRUD', `/surveys/categories`); 
+    this.setState({ survey, categories });
+  }
+  async saveSurvey(event) {
+    event.preventDefault();
+  
+    const { survey } = this.state;
+    const surveyId = survey.length + 1;
+    const question = this.refs.newQuestion.value;
     
+    const newSurvey = { "id": surveyId.toString(), "question": question, "category": "happiness", "widgets": 'slider' };
+    await API.post('surveysCRUD', '/surveys', { body: newSurvey });
+    survey.push(newSurvey);
+    this.refs.newQuestion.value = '';
     this.setState({ survey });
   }
   render() {
     console.log(this.state)
-    let surveys = this.state.survey.map(({id, question}) => {
-      return <li key={id}>{question}</li>;
+    let surveys = this.state.survey.map(({id, question,widgets, category}) => {
+      return <li key={id}>question:{question}, widget: {widgets},  category:{category}</li>;
     });
 
     return (
@@ -27,12 +40,14 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
+        
         <ul>
           {surveys}
         </ul>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <form onSubmit={this.saveSurvey.bind(this)}>
+          <input ref="newQuestion" type="text" placeholder="Question?" />
+          <input type="submit" value="Save" />
+        </form>
       </div>
     );
   }
