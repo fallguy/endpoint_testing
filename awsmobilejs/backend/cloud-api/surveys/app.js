@@ -34,6 +34,10 @@ if (hasDynamicPrefix) {
 
 const UNAUTH = 'UNAUTH';
 
+//Global Vars for Categories/Widgets
+let categories = ['happiness'];
+let widgets = ['mood-slider'];
+
 // declare a new express app
 var app = express()
 app.use(awsServerlessExpressMiddleware.eventContext({ deleteHeaders: false }), bodyParser.json(), function(req, res, next) {
@@ -71,10 +75,10 @@ app.get('/surveys', function(req, res) {
   });
 });
 app.get('/surveys/categories', function(req, res) {
-  res.json({data: ['happiness']})
+  res.json({data: categories})
 });
 app.get('/surveys/widgets', function(req, res) {
-  res.json({data: ['mood-slider']})
+  res.json({data: widgets})
 });
 
 /********************************
@@ -186,11 +190,14 @@ app.post(path, function(req, res) {
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
+  // if (categories.includes(req.body.category){
 
+  // }
   let putItemParams = {
     TableName: tableName,
     Item: req.body
   }
+ 
   dynamodb.put(putItemParams, (err, data) => {
     if(err) {
       res.json({error: err, url: req.url, body: req.body});
