@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Surveys from './Components/Surveys';
+import AddSurvey from './Components/AddSurvey';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -9,62 +11,58 @@ import { withAuthenticator } from 'aws-amplify-react';
 Amplify.configure(aws_exports);
 
 class App extends Component {
-  state = { survey: [], categories: {data:[]}, widgets: {data:[]} };
+  state = { survey: [], categories: {data: []}, widgets: {data:[]}};
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
-    let categories = await API.get('surveysCRUD', `/surveys/categories`); 
-    let widgets = await API.get('surveysCRUD', `/surveys/widgets`); 
-    this.setState({ survey, categories,widgets });
+    let categories = await API.get('surveysCRUD', `/surveys/categories`);
+    let widgets = await API.get('surveysCRUD', `/surveys/widgets`);
+    this.setState({ survey, categories, widgets });
   }
-  async saveSurvey(event) {
-    event.preventDefault();
-  
-    const { survey } = this.state;
-    const surveyId = survey.length + 1;
-    const question = this.refs.newQuestion.value;
-    const category = this.refs.newCategory.value;
-    const widget = this.refs.newWidget.value;
-    const newSurvey = { "id": surveyId.toString(), "question": question, "category": category, "widgets": widget };
+
+  async handleDeleteSurvey(id){
+    const path = '/surveys/object/' + id;
+    try {
+      const apiResponse = await API.del('surveysCRUD', path );
+      console.log('response from deleting survey: ' + apiResponse);
+      this.setState({apiResponse});
+    } catch (e) {
+      console.log(e);
+    }
+    let survey = this.state.survey;
+    console.log(survey);
+    console.log(id)
+    let index = survey.findIndex(function(x){
+      return x.id == id
+    });
+    console.log(index)
+    console.log(id)
+    survey.splice(index, 1);
+    this.setState({survey:survey})
+  }
+
+  async handleAddSurvey(newSurvey){
+    let survey = this.state.survey;
     await API.post('surveysCRUD', '/surveys', { body: newSurvey });
     survey.push(newSurvey);
-    this.refs.newQuestion.value = '';
-    this.setState({ survey });
+    this.setState({ survey }); 
   }
+
   render() {
     console.log(this.state)
-    let surveys = this.state.survey.map(({id, question,widgets, category}) => {
-      return <li key={id}>question:{question}, widget: {widgets},  category:{category}</li>;
-    });
-
-    let widgets = this.state.widgets.data.map((index) => {
-      return <option key={index}>{index}</option>
-    });
-    let categories = this.state.categories.data.map((index) => {
-      return <option key={index}>{index}</option>
-    });
 
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        
-        <ul>
-          {surveys}
-        </ul>
-        <form onSubmit={this.saveSurvey.bind(this)}>
-          <input ref="newQuestion" type="text" placeholder="Question?" />
-          <select ref="newWidget">
-          <option>Select a widget</option>
-            {widgets}
-          </select>
-          <select ref="newCategory">
-          <option>Select a category</option>
-            {categories}
-          </select>
-          <input type="submit" value="Save" />
-        </form>
+      <header className="App-header">
+      <img src={logo} className="App-logo" alt="logo" />
+      <h1 className="App-title">Welcome to React</h1>
+      </header>
+      <ul>
+      <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
+      <Surveys surveys={this.state.survey} onDelete={this.handleDeleteSurvey.bind(this)}/>
+      </ul>
+      <p className="App-intro">
+      To get started, edit <code>src/App.js</code> and save to reload.
+      </p>
       </div>
     );
   }

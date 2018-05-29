@@ -1,4 +1,6 @@
 --- !com.amazonaws.mobilehub.v0.Project 
+apps:
+  web: !com.amazonaws.mobilehub.v0.AppDO {}
 features:
   cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
     components:
@@ -9,31 +11,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /surveys: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180528170154.zip
+            codeFilename: uploads/surveys-20180528183554.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: lwGDK22mQT7sJzjdCuAMc4wLAOmeIrsUpwG87JdU+rM=
+            hashcode: 4tQzzKXrFQfc8fjENPOVJBXqLwnkJBXCVgSebPs+rjk=
             memorySize: '128'
-            modified: '2018-05-29T00:02:46.090+0000'
+            modified: '2018-05-29T01:36:36.235+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: bFO646Kbmem1UF_dlDvYQ93huV8J7NrW
+            version: elWpGj5CSkJBRWmA6WBuDJce19Ojt3G6
           '/surveys/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180528170154.zip
+            codeFilename: uploads/surveys-20180528183554.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: lwGDK22mQT7sJzjdCuAMc4wLAOmeIrsUpwG87JdU+rM=
+            hashcode: 4tQzzKXrFQfc8fjENPOVJBXqLwnkJBXCVgSebPs+rjk=
             memorySize: '128'
-            modified: '2018-05-29T00:02:46.090+0000'
+            modified: '2018-05-29T01:36:36.235+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: zCj.z85TiXN.bsw5BA778zwKeFB2uWwI
+            version: fa5gRrdA0BewR0b.yUWt31X7nXYMzJOT
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
@@ -77,5 +79,5 @@ features:
             require-numbers: false
             require-symbols: false
             require-upper-case: false
-name: endpoint_testing-2018-05-27-22-04-05
-region: us-west-2
+name: happy-place-survey
+region: us-east-2
