@@ -190,9 +190,15 @@ app.post(path, function(req, res) {
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
-  // if (categories.includes(req.body.category){
 
-  // }
+  if (!categories.includes(req.body.category)) {
+      res.json({error: 'invalid category', url: req.url, body: req.body});
+  }
+
+    if (!widgets.includes(req.body.widgets)) {
+        res.json({error: 'invalid widget', url: req.url, body: req.body});
+    }
+
   let putItemParams = {
     TableName: tableName,
     Item: req.body
