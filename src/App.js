@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import Surveys from './Components/Surveys';
+import AddSurvey from './Components/AddSurvey';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -10,38 +11,58 @@ import { withAuthenticator } from 'aws-amplify-react';
 Amplify.configure(aws_exports);
 
 class App extends Component {
-  state = { survey: [] };
+  state = { survey: [], categories: {data: []}, widgets: {data:[]}};
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
-    
-    this.setState({ survey });
+    let categories = await API.get('surveysCRUD', `/surveys/categories`);
+    let widgets = await API.get('surveysCRUD', `/surveys/widgets`);
+    this.setState({ survey, categories, widgets });
   }
 
-  handleDeleteSurvey(id){
+  async handleDeleteSurvey(id){
+    const path = '/surveys/object/' + id;
+    try {
+      const apiResponse = await API.del('surveysCRUD', path );
+      console.log('response from deleting survey: ' + apiResponse);
+      this.setState({apiResponse});
+    } catch (e) {
+      console.log(e);
+    }
     let survey = this.state.survey;
-    let index = survey.findIndex(x => id === id);
+    console.log(survey);
+    console.log(id)
+    let index = survey.findIndex(function(x){
+      return x.id == id
+    });
+    console.log(index)
+    console.log(id)
     survey.splice(index, 1);
-    this.setState({survey:survey});
+    this.setState({survey:survey})
+  }
+
+  async handleAddSurvey(newSurvey){
+    let survey = this.state.survey;
+    await API.post('surveysCRUD', '/surveys', { body: newSurvey });
+    survey.push(newSurvey);
+    this.setState({ survey }); 
   }
 
   render() {
     console.log(this.state)
-    let surveys = this.state.survey.map(({id, question}) => {
-      return <li key={id}>{question}</li>;
-    });
 
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <ul>
-          <Surveys surveys={this.state.survey} onDelete={this.handleDeleteSurvey.bind(this)}/>
-        </ul>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <header className="App-header">
+      <img src={logo} className="App-logo" alt="logo" />
+      <h1 className="App-title">Welcome to React</h1>
+      </header>
+      <ul>
+      <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
+      <Surveys surveys={this.state.survey} onDelete={this.handleDeleteSurvey.bind(this)}/>
+      </ul>
+      <p className="App-intro">
+      To get started, edit <code>src/App.js</code> and save to reload.
+      </p>
       </div>
     );
   }

@@ -9,31 +9,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /surveys: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180527222008.zip
+            codeFilename: uploads/surveys-20180528172857.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: oBKq7ra6QKKMgCJrEzMN1UMbvkQwUcbFwBCpCCUg1P4=
+            hashcode: Ahvs8gDwLt5WcTdN6ZHLLvBjYEHDHp1Yut4N47RBtkk=
             memorySize: '128'
-            modified: '2018-05-28T05:21:42.264+0000'
+            modified: '2018-05-29T00:29:42.059+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: ezxBtSXdQ9woF8IW_bcMoiJajRpcWiBD
+            version: hDdsV2Ls.lewuakw5UrWoN5PBM30Pvg9
           '/surveys/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180527222008.zip
+            codeFilename: uploads/surveys-20180528172857.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: oBKq7ra6QKKMgCJrEzMN1UMbvkQwUcbFwBCpCCUg1P4=
+            hashcode: Ahvs8gDwLt5WcTdN6ZHLLvBjYEHDHp1Yut4N47RBtkk=
             memorySize: '128'
-            modified: '2018-05-28T05:21:42.264+0000'
+            modified: '2018-05-29T00:29:42.059+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: vK.h_3ZZDdFVtU0GF_yQfCx6xPtW._gp
+            version: kxpJKU9CjHRqRH0dHaIVwVbl3CAKA2KK
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class Surveys extends Component {
   deleteSurvey(id){
-    this.props.onDelete();
+    this.props.onDelete(id);
   }
 
   render() {
