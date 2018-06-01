@@ -7,6 +7,10 @@ class Surveys extends Component {
     this.props.onDelete(id);
   }
 
+  updateSurvey(id){
+    this.props.onUpdate(id);
+  }
+
   render() {
     console.log(this.props);
     let surveyItems;
@@ -14,7 +18,7 @@ class Surveys extends Component {
       surveyItems = this.props.surveys.map(survey => {
         console.log(survey);
         return (
-          <SurveyItem onDelete={this.deleteSurvey.bind(this)} key={survey.question} survey={survey} />
+          <SurveyItem onDelete={this.deleteSurvey.bind(this)} onUpdate={this.updateSurvey.bind(this)} key={survey.question} survey={survey} />
         )
       });
     }
@@ -29,6 +33,7 @@ class Surveys extends Component {
 
 Surveys.propTypes = {
   surveys: PropTypes.array,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onUpdate: PropTypes.func
 }
 export default Surveys;

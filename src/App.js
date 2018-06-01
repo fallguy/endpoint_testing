@@ -10,8 +10,13 @@ import { withAuthenticator } from 'aws-amplify-react';
 
 Amplify.configure(aws_exports);
 
+ var print_survey = function(){
+    console.log('Survey inputs are...id: ' )//+ this.id + ' survey: ' + this.survey + ' category: ' + this.categories + ' widget: ' + this.widgets )
+  }
+
 class App extends Component {
   state = { survey: [], categories: {data: []}, widgets: {data:[]}};
+  
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
     let categories = await API.get('surveysCRUD', `/surveys/categories`);
@@ -32,12 +37,41 @@ class App extends Component {
     console.log(survey);
     console.log(id)
     let index = survey.findIndex(function(x){
-      return x.id == id
+      return x.id === id
     });
     console.log(index)
     console.log(id)
     survey.splice(index, 1);
     this.setState({survey:survey})
+  }
+
+ 
+
+  async handleUpdateSurvey(id){
+    const path = '/surveys/object/' + id;
+    console.log('hello id #');
+
+    try {
+      const apiUpdate = await API.put('surveysCRUD', path );
+      console.log('response from updating survey: ' + apiUpdate);
+      this.setState({apiUpdate});
+    } catch (e) {
+      console.log(e);
+    }
+    // let survey = this.state.survey;
+    // let categories = await API.put('surveysCRUD', `/surveys/categories`);
+    // let widgets = await API.put('surveysCRUD', `/surveys/widgets`);
+    // console.log(survey);
+    // console.log(categories);
+    // console.log(widgets);
+    // console.log(id)
+    // let index = survey.findIndex(function(x){
+    //   return x.id == id
+    // });
+    // console.log(index)
+    // console.log(id)
+    // // survey.splice(index, 1);
+    // this.setState({survey:survey})
   }
 
   async handleAddSurvey(newSurvey){
@@ -58,7 +92,7 @@ class App extends Component {
       </header>
       <ul>
       <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
-      <Surveys surveys={this.state.survey} onDelete={this.handleDeleteSurvey.bind(this)}/>
+      <Surveys surveys={this.state.survey} onDelete={this.handleDeleteSurvey.bind(this)} onUpdate={this.handleUpdateSurvey.bind(this)}/>
       </ul>
       <p className="App-intro">
       To get started, edit <code>src/App.js</code> and save to reload.
