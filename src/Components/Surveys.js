@@ -7,8 +7,8 @@ class Surveys extends Component {
     this.props.onDelete(id);
   }
 
-  updateSurvey(id){
-    this.props.onUpdate(id);
+  updateSurvey(survey){
+    this.props.onUpdate(survey);
   }
 
   render() {
