@@ -23,9 +23,9 @@ class SurveyItem extends Component {
   }
 
   editSurvey(event) {
-    this.props.survey.question = { [event.target.name]: event.target.value}
-    this.props.survey.widget = { [event.target.name]: event.target.value}
-    this.props.survey.category = { [event.target.name]: event.target.value}
+    this.props.survey.question=event.target.value;
+    this.props.survey.widget=event.target.value;
+    this.props.survey.category=event.target.value;
     this.setState({survey: this.state.survey});
   }
 
