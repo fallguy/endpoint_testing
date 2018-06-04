@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 import SurveyItem from './SurveyItem';
 import PropTypes from 'prop-types';
 
+// look up react component API
 class Surveys extends Component {
+  
+  // constructor(props){
+  //   super(props);
+  //   this.state = {surveys: this.props.surveys}
+  // }
+
   deleteSurvey(id){
     this.props.onDelete(id);
   }
 
-  updateSurvey(id){
-    this.props.onUpdate(id);
+  updateSurvey(survey){
+    // this.setState({surveys:this.props.surveys})
+    this.props.onUpdate(survey);
   }
 
   render() {

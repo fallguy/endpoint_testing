@@ -46,15 +46,12 @@ class App extends Component {
   }
 
  
-
-  async handleUpdateSurvey(id){
-    const path = '/surveys/object/' + id;
-    console.log('hello id #');
-
+  async handleUpdateSurvey(survey){
+    const path = '/surveys';
     try {
-      const apiUpdate = await API.put('surveysCRUD', path );
+      const apiUpdate = await API.put('surveysCRUD', path, { body: survey });
       console.log('response from updating survey: ' + apiUpdate);
-      this.setState({apiUpdate});
+     
     } catch (e) {
       console.log(e);
     }
