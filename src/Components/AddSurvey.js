@@ -12,7 +12,7 @@ class AddSurvey extends Component {
     const widget = this.refs.widget.value;
     const newSurvey = { "id": surveyId.toString(), "question": question, "category": category, "widgets": widget };
 
-    console.log('Submitted: '); //this.questionId + ' ' + this.question + ' ' this.category ' ' + this.widget );
+    console.log('Submitted: '); 
     if (this.refs.question.value === ''){
       alert('Question is required');
     } else {
@@ -22,13 +22,11 @@ class AddSurvey extends Component {
         category: this.refs.category.value,
         widget: this.refs.widget.value
       }}, function(){
-        // console.log('Submitted: ' + this.props.props);
         this.props.addSurvey(this.state.newSurvey);
       });
     }
     e.preventDefault();
     this.refs.question.value = '';
-    // console.log('Submitted' + this.state.newSurvey);
   }
   render() {
     let categoryOptions = this.props.category.data.map(category => {

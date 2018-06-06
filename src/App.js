@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import Surveys from './Components/Surveys';
 import AddSurvey from './Components/AddSurvey';
+import SurveyItem from './Components/SurveyItem';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -55,20 +56,6 @@ class App extends Component {
     } catch (e) {
       console.log(e);
     }
-    // let survey = this.state.survey;
-    // let categories = await API.put('surveysCRUD', `/surveys/categories`);
-    // let widgets = await API.put('surveysCRUD', `/surveys/widgets`);
-    // console.log(survey);
-    // console.log(categories);
-    // console.log(widgets);
-    // console.log(id)
-    // let index = survey.findIndex(function(x){
-    //   return x.id == id
-    // });
-    // console.log(index)
-    // console.log(id)
-    // // survey.splice(index, 1);
-    // this.setState({survey:survey})
   }
 
   async handleAddSurvey(newSurvey){
@@ -89,7 +76,7 @@ class App extends Component {
       </header>
       <ul>
       <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
-      <Surveys surveys={this.state.survey} onDelete={this.handleDeleteSurvey.bind(this)} onUpdate={this.handleUpdateSurvey.bind(this)}/>
+      <Surveys surveys={this.state.survey} categories={this.state.categories} widgets={this.state.widgets}  onDelete={this.handleDeleteSurvey.bind(this)} onUpdate={this.handleUpdateSurvey.bind(this)}/>
       </ul>
       <p className="App-intro">
       To get started, edit <code>src/App.js</code> and save to reload.

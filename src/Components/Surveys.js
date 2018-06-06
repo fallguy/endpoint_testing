@@ -4,18 +4,12 @@ import PropTypes from 'prop-types';
 
 // look up react component API
 class Surveys extends Component {
-  
-  // constructor(props){
-  //   super(props);
-  //   this.state = {surveys: this.props.surveys}
-  // }
 
   deleteSurvey(id){
     this.props.onDelete(id);
   }
 
   updateSurvey(survey){
-    // this.setState({surveys:this.props.surveys})
     this.props.onUpdate(survey);
   }
 
@@ -26,7 +20,7 @@ class Surveys extends Component {
       surveyItems = this.props.surveys.map(survey => {
         console.log(survey);
         return (
-          <SurveyItem onDelete={this.deleteSurvey.bind(this)} onUpdate={this.updateSurvey.bind(this)} key={survey.question} survey={survey} />
+          <SurveyItem category={this.props.categories} widget={this.props.widgets}  onDelete={this.deleteSurvey.bind(this)} onUpdate={this.updateSurvey.bind(this)} key={survey.question} survey={survey} />
         )
       });
     }
