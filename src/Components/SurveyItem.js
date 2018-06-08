@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import "../index.css";
 
 class SurveyItem extends Component {
+
+
   
   constructor(props){
     super(props);
@@ -17,9 +19,6 @@ class SurveyItem extends Component {
   }
 
   updateSurvey(id) {
-    // console.log('survey features - question: ' + this.props.survey.question + ' widget: ' + this.props.survey.widget);
-    // this.props.survey.question = 'I\'m changed!!!'
-    // this.setState({survey:this.state.survey});
     this.props.onUpdate(this.props.survey);
   }
 
@@ -34,15 +33,13 @@ class SurveyItem extends Component {
     let question = this.props.survey.question;
     let category = this.props.survey.category;
     let widget = this.props.survey.widget;
-    // let categoryOptions = this.props.category.data.map(category => {
-    //   return <option key={category} value={category}>{category}</option>
-    // });
-    // let widgetOptions = this.props.widget.data.map(widget => {
-    //   return <option key={widget} value={widget}>{widget}</option>
-    // });
-    // let newText = text.split('\n').map(i => {
+    let categoryOptions = this.props.category.data.map(category => {
+      return <option key={category} value={category}>{category}</option>
+    });
+    let widgetOptions = this.props.widget.data.map(widget => {
+      return <option key={widget} value={widget}>{widget}</option>
+    });
     return (
-      //can't use class, has to be classname
       <div className="Surveys">
         <div>
           <span class="list-item question">{this.props.survey.question}{" "}</span>
@@ -52,9 +49,14 @@ class SurveyItem extends Component {
             <label>Question</label>
             <input name="question" type="text" placeholder="Edit" onChange={this.editSurvey} value={this.props.survey.question} />
             <label>Category</label>
-            <input name="category" type="text" placeholder="mood-slider" onChange={this.editSurvey} value={this.props.survey.category} />
+            <select ref="category" value={this.props.survey.question} name="question" onChange={this.editSurvey}>
+              {categoryOptions}}
+            </select>
+        
             <label>Widget</label>
-            <input name="widget" type="text" placeholder="happiness" onChange={this.editSurvey} value={this.props.survey.widget} />
+            <select ref="widget" name="widget" value={this.props.survey.widget} onChange={this.editSurvey} >
+              {widgetOptions}}
+            </select>
             <a href="#" onClick={this.updateSurvey.bind(this)}>
               SAVE
             </a>
