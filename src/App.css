@@ -33,3 +33,7 @@
   font-size: 16px;
   text-decoration: underline;
 }*/
+
+span.list-item {
+  margin-right: 30px;
+}

@@ -26,7 +26,7 @@ class Surveys extends Component {
     }
     return (
       <div className="Surveys">
-      <h3>Latest Surveys</h3>
+      <h3>Existing Surveys</h3>
       {surveyItems}
       </div>
     );
