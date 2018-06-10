@@ -1,9 +1,39 @@
 --- !com.amazonaws.mobilehub.v0.Project 
-apps:
-  web: !com.amazonaws.mobilehub.v0.AppDO {}
 features:
   cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
     components:
+      notifyCRUD: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: notifyCRUD
+          requires-signin: false
+          sdk-generation-stage-name: Development
+        paths:
+          /notify: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/notify-20180606142030.zip
+            description: 'Handler for calls to resource path : /notify/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: xpy57xdeIQnjDp2+Brt/IPXqOYtmnrdwVqmBpxHmlAE=
+            memorySize: '128'
+            modified: '2018-06-06T21:21:18.689+0000'
+            name: notify
+            runtime: nodejs6.10
+            timeout: '3'
+            version: JPy6APKZv2W6Gtyl5JbsRweLtknw_Fcj
+          '/notify/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/notify-20180606142030.zip
+            description: 'Handler for calls to resource path : /notify/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: xpy57xdeIQnjDp2+Brt/IPXqOYtmnrdwVqmBpxHmlAE=
+            memorySize: '128'
+            modified: '2018-06-06T21:21:18.689+0000'
+            name: notify
+            runtime: nodejs6.10
+            timeout: '3'
+            version: DVnhrS55lqRLMd14mt_D5opCQajqbSCb
       surveysCRUD: !com.amazonaws.mobilehub.v0.API 
         attributes:
           name: surveysCRUD
@@ -11,31 +41,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /surveys: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180528183554.zip
+            codeFilename: uploads/surveys-20180606142030.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: 4tQzzKXrFQfc8fjENPOVJBXqLwnkJBXCVgSebPs+rjk=
+            hashcode: V5v8iL7hhC1MFq89RJZW8fDdSqoL4S6Nzxe7gyOEAbA=
             memorySize: '128'
-            modified: '2018-05-29T01:36:36.235+0000'
+            modified: '2018-06-06T21:21:18.451+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: elWpGj5CSkJBRWmA6WBuDJce19Ojt3G6
+            version: UMfODUTC9JhGKnjfLp25RPp8kQz63hSt
           '/surveys/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180528183554.zip
+            codeFilename: uploads/surveys-20180606142030.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: 4tQzzKXrFQfc8fjENPOVJBXqLwnkJBXCVgSebPs+rjk=
+            hashcode: V5v8iL7hhC1MFq89RJZW8fDdSqoL4S6Nzxe7gyOEAbA=
             memorySize: '128'
-            modified: '2018-05-29T01:36:36.235+0000'
+            modified: '2018-06-06T21:21:18.451+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: fa5gRrdA0BewR0b.yUWt31X7nXYMzJOT
+            version: O9WCnYauqyw1nwkHPdUgC.SQAHWuPXks
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
@@ -58,6 +88,18 @@ features:
             rangeKeyType: ''
             tableName: ___DYNAMIC_PREFIX___-surveys
             tablePrivacy: public
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              id: S
+              surveyId: S
+              time: N
+              userId: S
+            hashKeyName: id
+            hashKeyType: S
+            rangeKeyName: time
+            rangeKeyType: N
+            tableName: ___DYNAMIC_PREFIX___-notify
+            tablePrivacy: public
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:
       analytics: !com.amazonaws.mobilehub.v0.PinpointAnalytics {}
@@ -79,5 +121,5 @@ features:
             require-numbers: false
             require-symbols: false
             require-upper-case: false
-name: happy-place-survey
-region: us-east-2
+name: endpoint_testing-2018-05-27-22-19-59
+region: us-west-2
