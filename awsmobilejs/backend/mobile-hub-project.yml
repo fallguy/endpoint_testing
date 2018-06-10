@@ -2,6 +2,38 @@
 features:
   cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
     components:
+      notifyCRUD: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: notifyCRUD
+          requires-signin: false
+          sdk-generation-stage-name: Development
+        paths:
+          /notify: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/notify-20180606142030.zip
+            description: 'Handler for calls to resource path : /notify/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: xpy57xdeIQnjDp2+Brt/IPXqOYtmnrdwVqmBpxHmlAE=
+            memorySize: '128'
+            modified: '2018-06-06T21:21:18.689+0000'
+            name: notify
+            runtime: nodejs6.10
+            timeout: '3'
+            version: JPy6APKZv2W6Gtyl5JbsRweLtknw_Fcj
+          '/notify/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/notify-20180606142030.zip
+            description: 'Handler for calls to resource path : /notify/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: xpy57xdeIQnjDp2+Brt/IPXqOYtmnrdwVqmBpxHmlAE=
+            memorySize: '128'
+            modified: '2018-06-06T21:21:18.689+0000'
+            name: notify
+            runtime: nodejs6.10
+            timeout: '3'
+            version: DVnhrS55lqRLMd14mt_D5opCQajqbSCb
       surveysCRUD: !com.amazonaws.mobilehub.v0.API 
         attributes:
           name: surveysCRUD
@@ -9,7 +41,7 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /surveys: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180610144501.zip
+            codeFilename: uploads/surveys-20180606142030.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
@@ -55,6 +87,18 @@ features:
             rangeKeyName: ''
             rangeKeyType: ''
             tableName: ___DYNAMIC_PREFIX___-surveys
+            tablePrivacy: public
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              id: S
+              surveyId: S
+              time: N
+              userId: S
+            hashKeyName: id
+            hashKeyType: S
+            rangeKeyName: time
+            rangeKeyType: N
+            tableName: ___DYNAMIC_PREFIX___-notify
             tablePrivacy: public
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:

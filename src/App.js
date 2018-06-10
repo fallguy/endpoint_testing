@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import Surveys from './Components/Surveys';
 import AddSurvey from './Components/AddSurvey';
 import SurveyItem from './Components/SurveyItem';
+import Notifications from './Components/Notifications';
+import AddNotification from './Components/AddNotification';
+import NotificationItem from './Components/NotificationItem';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -16,13 +19,21 @@ Amplify.configure(aws_exports);
   }
 
 class App extends Component {
-  state = { survey: [], categories: {data: []}, widgets: {data:[]}};
+  state = { survey: [], categories: {data: []}, widgets: {data:[]}, notification: [], userIds: {data: []}, surveyIds: {data: []} };
   
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
     let categories = await API.get('surveysCRUD', `/surveys/categories`);
     let widgets = await API.get('surveysCRUD', `/surveys/widgets`);
-    this.setState({ survey, categories, widgets });
+    let notification = await API.get('notifyCRUD', `/notify`);
+    //let userId = await API.get('notifyCRUD', `/surveys/`);
+    let surveyIds = {data: []};
+    Object.keys(survey).map(e => {
+      surveyIds.data.push(`${survey[e].id}`);
+    })
+    console.log(surveyIds);
+    console.log(categories);
+    this.setState({ survey, categories, widgets, notification, surveyIds});
   }
 
   async handleDeleteSurvey(id){
@@ -46,13 +57,45 @@ class App extends Component {
     this.setState({survey:survey})
   }
 
- 
+  async handleDeleteNotification(id){
+    const path = '/notify/object/' + id;
+    try {
+      const apiResponse = await API.del('notifyCRUD', path );
+      console.log('response from deleting notify: ' + apiResponse);
+      this.setState({apiResponse});
+    } catch (e) {
+      console.log(e);
+    }
+    let notification = this.state.notification;
+    console.log(notification);
+    console.log(id)
+    let index = notification.findIndex(function(x){
+      return x.id === id
+    });
+    console.log(index)
+    console.log(id)
+    notification.splice(index, 1);
+    this.setState({notification:notification})
+  }
+
+
   async handleUpdateSurvey(survey){
     const path = '/surveys';
     try {
       const apiUpdate = await API.put('surveysCRUD', path, { body: survey });
       console.log('response from updating survey: ' + apiUpdate);
-     
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async handleUpdateNotification(notification){
+    const path = '/notify';
+    try {
+      const apiUpdate = await API.put('notifyCRUD', path, { body: notification });
+      console.log('response from updating notification: ' + apiUpdate);
+
     } catch (e) {
       console.log(e);
     }
@@ -65,6 +108,13 @@ class App extends Component {
     this.setState({ survey }); 
   }
 
+  async handleAddNotification(newNotification){
+    let notification = this.state.notification;
+    await API.post('notifyCRUD', '/notify', { body: newNotification });
+    notification.push(newNotification);
+    this.setState({ notification }); 
+  }
+
   render() {
     console.log(this.state)
 
@@ -72,6 +122,11 @@ class App extends Component {
       <div className="App">
       <ul>
       <div className="AddSurvey">
+      <AddNotification notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
+      <Notifications notifications={this.state.notification} surveys={this.state.survey} surveyIds={this.state.surveyIds} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
+      <NotificationItem notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
+      </ul>
+      <ul>
       <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
       </div>
       <div className="ExistingSurveys">

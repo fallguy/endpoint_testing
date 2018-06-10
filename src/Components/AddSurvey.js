@@ -66,6 +66,7 @@ class AddSurvey extends Component {
 
 AddSurvey.propTypes = {
   categories: PropTypes.array,
+  widgets: PropTypes.array,
   addSurvey: PropTypes.func 
 }
 
