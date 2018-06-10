@@ -9,31 +9,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /notify: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/notify-20180606142030.zip
+            codeFilename: uploads/notify-20180610154008.zip
             description: 'Handler for calls to resource path : /notify/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: xpy57xdeIQnjDp2+Brt/IPXqOYtmnrdwVqmBpxHmlAE=
+            hashcode: nBIJ/mJhUWNtT3d0C53DVwW6cv+HzUSCHknxQ9QOd10=
             memorySize: '128'
-            modified: '2018-06-06T21:21:18.689+0000'
+            modified: '2018-06-10T22:41:10.416+0000'
             name: notify
             runtime: nodejs6.10
             timeout: '3'
-            version: JPy6APKZv2W6Gtyl5JbsRweLtknw_Fcj
+            version: 3T805eG.VNr1BdHzFwlWQ_ObVhXVbyyU
           '/notify/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/notify-20180606142030.zip
+            codeFilename: uploads/notify-20180610154008.zip
             description: 'Handler for calls to resource path : /notify/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: xpy57xdeIQnjDp2+Brt/IPXqOYtmnrdwVqmBpxHmlAE=
+            hashcode: nBIJ/mJhUWNtT3d0C53DVwW6cv+HzUSCHknxQ9QOd10=
             memorySize: '128'
-            modified: '2018-06-06T21:21:18.689+0000'
+            modified: '2018-06-10T22:41:10.416+0000'
             name: notify
             runtime: nodejs6.10
             timeout: '3'
-            version: DVnhrS55lqRLMd14mt_D5opCQajqbSCb
+            version: K4QHLca072rNhi4QCvriDKbes1fqW7dG
       surveysCRUD: !com.amazonaws.mobilehub.v0.API 
         attributes:
           name: surveysCRUD
@@ -41,31 +41,31 @@ features:
           sdk-generation-stage-name: Development
         paths:
           /surveys: !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180606142030.zip
+            codeFilename: uploads/surveys-20180610155851.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: Qj299aSUExMPWDwtr8r5Fn+/OXUOuvLdljqAtIaVvsA=
+            hashcode: udAfxIt4G79GUiyug3E7DIpcGGIGqfANIZeoVq+m+II=
             memorySize: '128'
-            modified: '2018-06-10T21:46:00.844+0000'
+            modified: '2018-06-10T22:59:33.651+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: wwaiSZqEBCTgKp6vaB1XnQPNMAqybRud
+            version: 9kn7VFyYm9VfJ.ozSm2zkv7yBrzzQu5n
           '/surveys/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
-            codeFilename: uploads/surveys-20180610144501.zip
+            codeFilename: uploads/surveys-20180610155851.zip
             description: 'Handler for calls to resource path : /surveys/{proxy+}'
             enableCORS: true
             environment: {}
             handler: lambda.handler
-            hashcode: Qj299aSUExMPWDwtr8r5Fn+/OXUOuvLdljqAtIaVvsA=
+            hashcode: udAfxIt4G79GUiyug3E7DIpcGGIGqfANIZeoVq+m+II=
             memorySize: '128'
-            modified: '2018-06-10T21:46:00.844+0000'
+            modified: '2018-06-10T22:59:33.651+0000'
             name: surveys
             runtime: nodejs6.10
             timeout: '3'
-            version: QBRw0BCEOCxp2x5.uSDgrm6ZE7wTDMx0
+            version: nXUGZ4r.w7QY8xBzbvO2yZcnaQYrv3q2
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
@@ -78,18 +78,6 @@ features:
         tables:
           - !com.amazonaws.mobilehub.v0.NoSQLTable 
             attributes:
-              category: S
-              id: S
-              question: S
-              widget: S
-            hashKeyName: id
-            hashKeyType: S
-            rangeKeyName: ''
-            rangeKeyType: ''
-            tableName: ___DYNAMIC_PREFIX___-surveys
-            tablePrivacy: public
-          - !com.amazonaws.mobilehub.v0.NoSQLTable 
-            attributes:
               id: S
               surveyId: S
               time: N
@@ -99,6 +87,18 @@ features:
             rangeKeyName: time
             rangeKeyType: N
             tableName: ___DYNAMIC_PREFIX___-notify
+            tablePrivacy: public
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              category: S
+              id: S
+              question: S
+              widget: S
+            hashKeyName: id
+            hashKeyType: S
+            rangeKeyName: ''
+            rangeKeyType: ''
+            tableName: ___DYNAMIC_PREFIX___-surveys
             tablePrivacy: public
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:

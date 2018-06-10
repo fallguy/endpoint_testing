@@ -121,14 +121,14 @@ class App extends Component {
     return (
       <div className="App">
       <ul>
-      <div className="AddSurvey">
+      
       <AddNotification notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
       <Notifications notifications={this.state.notification} surveys={this.state.survey} surveyIds={this.state.surveyIds} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
       <NotificationItem notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
       </ul>
       <ul>
       <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
-      </div>
+
       <div className="ExistingSurveys">
       <Surveys surveys={this.state.survey} categories={this.state.categories} widgets={this.state.widgets}  onDelete={this.handleDeleteSurvey.bind(this)} onUpdate={this.handleUpdateSurvey.bind(this)}/>
       </div>
