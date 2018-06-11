@@ -9,17 +9,48 @@ class SurveyItem extends Component {
     this.state = {survey: this.props.survey}
 
     this.editSurvey = this.editSurvey.bind(this);
-    console.log(this);
+    
+    // for revealing/hiding update input section
+    this.state = {
+      showUpdate: false,
+    };
+    this.showUpdate = this.showUpdate.bind(this);
+    this.closeUpdate = this.closeUpdate.bind(this);
+
+
+    // console.log(this);
   }
 
   deleteSurvey(id) {
     this.props.onDelete(id);
   }
 
+  showUpdate(event) {
+    event.defaultPrevented;
+   
+    this.setState({ showUpdate: true }, () => {
+      document.addEventListener('click', this.closeUpdate);
+    });
+  }
+
+  closeUpdate(event) {
+
+    if (!this.dropdownUpdate.contains(event.target)) {
+
+      this.setState({ showUpdate: false }, () => {
+        document.removeEventListener('click', this.closeUpdate);
+      });
+    }
+
+    // this.setState(prevState => ({
+    //   isToggleOn: !prevState.isToggleOn
+    // }));
+  }
+
   updateSurvey(id) {
-    // console.log('survey features - question: ' + this.props.survey.question + ' widget: ' + this.props.survey.widget);
-    // this.props.survey.question = 'I\'m changed!!!'
-    // this.setState({survey:this.state.survey});
+    this.setState({ showUpdate: false }, () => {
+        document.removeEventListener('click', this.closeUpdate);
+      });
     this.props.onUpdate(this.props.survey);
   }
 
@@ -34,40 +65,55 @@ class SurveyItem extends Component {
     let question = this.props.survey.question;
     let category = this.props.survey.category;
     let widget = this.props.survey.widget;
-    // let categoryOptions = this.props.category.data.map(category => {
-    //   return <option key={category} value={category}>{category}</option>
-    // });
-    // let widgetOptions = this.props.widget.data.map(widget => {
-    //   return <option key={widget} value={widget}>{widget}</option>
-    // });
-    // let newText = text.split('\n').map(i => {
+    let categoryOptions = this.props.category.data.map(category => {
+      return <option key={category} value={category}>{category}</option>
+    });
+    let widgetOptions = this.props.widget.data.map(widget => {
+      return <option key={widget} value={widget}>{widget}</option>
+    });
     return (
-      //can't use class, has to be classname
       <div className="Surveys">
         <div>
           <span class="list-item question">{this.props.survey.question}{" "}</span>
           <span class="list-item category">{this.props.survey.category}{" "}</span>
           <span class="list-item widget">{this.props.survey.widget}</span>
-          <div class="toggle-update">
-            <label>Question</label>
-            <input name="question" type="text" placeholder="Edit" onChange={this.editSurvey} value={this.props.survey.question} />
-            <label>Category</label>
-            <input name="category" type="text" placeholder="mood-slider" onChange={this.editSurvey} value={this.props.survey.category} />
-            <label>Widget</label>
-            <input name="widget" type="text" placeholder="happiness" onChange={this.editSurvey} value={this.props.survey.widget} />
-            <a href="#" onClick={this.updateSurvey.bind(this)}>
-              SAVE
-            </a>
-          </div>
-          <a href="#" onClick={this.updateSurvey.bind(this, this.props.survey.id)}>
+          <button class="list-item UPDATE" href="#" onClick={this.showUpdate.bind(this, this.props.survey.id)}>
             UPDATE
-          </a>          
-          <a
+          </button>          
+          <button class="list-item DELETE"
             href="#"
             onClick={this.deleteSurvey.bind(this, this.props.survey.id)}
           >
             DELETE
-          </a>
+          </button>
+          {
+            this.state.showUpdate
+              ? (
+                <div 
+                  class="toggle-update"
+                  ref={(element) => {
+                    this.dropdownUpdate = element;
+                  }}>
+
+                  <label>Question</label>
+                  <input name="question" type="text" placeholder="Edit" onChange={this.editSurvey} value={this.props.survey.question} />
+                  <label>Category</label>
+                  <select ref="category" value={this.props.survey.question} name="question" onChange={this.editSurvey}>
+                    {categoryOptions}}
+                  </select>
+                  <label>Widget</label>
+                  <select ref="widget" name="widget" value={this.props.survey.widget} onChange={this.editSurvey} >
+                    {widgetOptions}}
+                  </select>
+                  <button href="#" onClick={this.updateSurvey.bind(this)}>
+                    SAVE
+                  </button>
+              </div>
+              )
+              : (
+                null
+                )
+          }
         </div>
       </div>
     );
