@@ -17,7 +17,6 @@ class SurveyItem extends Component {
     this.showUpdate = this.showUpdate.bind(this);
     this.closeUpdate = this.closeUpdate.bind(this);
 
-
     // console.log(this);
   }
 
@@ -74,13 +73,13 @@ class SurveyItem extends Component {
     return (
       <div className="Surveys">
         <div>
-          <span class="list-item question">{this.props.survey.question}{" "}</span>
-          <span class="list-item category">{this.props.survey.category}{" "}</span>
-          <span class="list-item widget">{this.props.survey.widget}</span>
-          <button class="list-item UPDATE" href="#" onClick={this.showUpdate.bind(this, this.props.survey.id)}>
+          <span className="list-item question">{question}{" "}</span>
+          <span className="list-item category">{category}{" "}</span>
+          <span className="list-item widget">{widget}</span>
+          <button className="list-item UPDATE" href="#" onClick={this.showUpdate.bind(this, this.props.survey.id)}>
             UPDATE
           </button>          
-          <button class="list-item DELETE"
+          <button className="list-item DELETE"
             href="#"
             onClick={this.deleteSurvey.bind(this, this.props.survey.id)}
           >
@@ -90,20 +89,20 @@ class SurveyItem extends Component {
             this.state.showUpdate
               ? (
                 <div 
-                  class="toggle-update"
+                  className="toggle-update"
                   ref={(element) => {
                     this.dropdownUpdate = element;
                   }}>
 
                   <label>Question</label>
-                  <input name="question" type="text" placeholder="Edit" onChange={this.editSurvey} value={this.props.survey.question} />
+                  <input name="question" type="text" placeholder="Edit" onChange={this.editSurvey} value={question} />
                   <label>Category</label>
-                  <select ref="category" value={this.props.survey.question} name="question" onChange={this.editSurvey}>
-                    {categoryOptions}}
+                  <select ref="category" value={question} name="question" onChange={this.editSurvey}>
+                    {categoryOptions}
                   </select>
                   <label>Widget</label>
-                  <select ref="widget" name="widget" value={this.props.survey.widget} onChange={this.editSurvey} >
-                    {widgetOptions}}
+                  <select ref="widget" name="widget" value={widget} onChange={this.editSurvey} >
+                    {widgetOptions}
                   </select>
                   <button href="#" onClick={this.updateSurvey.bind(this)}>
                     SAVE

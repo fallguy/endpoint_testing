@@ -9,17 +9,45 @@ class NotificationItem extends Component {
     this.state = {notification: this.props.notification}
 
     this.editNotification = this.editNotification.bind(this);
-    console.log(this);
+    
+    // for revealing/hiding update input section
+    this.state = {
+      showUpdate: false,
+    };
+    this.showUpdate = this.showUpdate.bind(this);
+    this.closeUpdate = this.closeUpdate.bind(this);
+
+    // console.log(this);
   }
 
-  deleteNotification(id) {
+  deleteNotification(id, time) {
     this.props.onDelete(id);
+    this.props.onDelete(time);
+    console.log(time);
+  }
+
+  showUpdate(event) {
+    event.defaultPrevented;
+
+    this.setState({ showUpdate: true }, () => {
+      document.addEventListener('click', this.closeUpdate);
+    });
+  }
+
+  closeUpdate(event) {
+
+    if (!this.dropdownUpdate.contains(event.target)) {
+
+      this.setState({ showUpdate: false }, () => {
+        document.removeEventListener('click', this.closeUpdate);
+      });
+    }
   }
 
   updateNotification(id) {
-    // console.log('notification features - question: ' + this.props.notification.question + ' widget: ' + this.props.notification.widget);
-    // this.props.notification.question = 'I\'m changed!!!'
-    // this.setState({notification:this.state.notification});
+    this.setState({ showUpdate: false }, () => {
+      document.removeEventListener('click', this.closeUpdate);
+    });
     this.props.onUpdate(this.props.notification);
   }
 
@@ -31,48 +59,56 @@ class NotificationItem extends Component {
 
   render() {
     console.log(this.props);
-    let time = this.props.notifications.time;
-    let questionOption = this.props.surveys.map(survey => {
-      return <option key={survey.id} value={survey.id}>{survey.question}</option>
+    let id = this.props.notification.id
+    let time = this.props.notification.time;
+    let question = this.props.surveys.question;
+    let questionOptions = this.props.surveys.map(survey => {
+      return <option key={survey.id} value={survey.id}>{survey.question} {survey.category} {survey.widget}</option>
     });
-    // let categoryOptions = this.props.category.data.map(category => {
-    //   return <option key={category} value={category}>{category}</option>
-    // });
-    // let widgetOptions = this.props.widget.data.map(widget => {
-    //   return <option key={widget} value={widget}>{widget}</option>
-    // });
-    // let newText = text.split('\n').map(i => {
     return (
-      //can't use class, has to be classname
       <div className="Notifications">
         <div>
-          <span class="list-item question">{this.props.notifications.question}{" "}</span>
-          <span class="list-item time">{this.props.notifications.time}</span>
-          <div class="toggle-update">
-            <label>Time</label>
-            <input name="time" type="text" placeholder="1528239669" onChange={this.editNotification} value={this.props.notifications.time} />
-            <label>Question</label><br />
-            <select ref="question">
-              {questionOption}
-            </select>
-            <a href="#" onClick={this.updateNotification.bind(this)}>
-            SAVE
-            </a>
-          </div>
-          <a href="#" onClick={this.updateNotification.bind(this, this.props.notifications.id)}>
+          <span className="list-item time">{time}{" "}</span>
+          <span className="list-item question">{question}</span>
+          <button className="list-item UPDATE" href="#" onClick={this.showUpdate.bind(this, id)}>
             UPDATE
-          </a>          
-          <a href="#" onClick={this.deleteNotification.bind(this, this.props.notifications.id)}>
+          </button>
+          <button className="list-item DELETE"
+            href="#" onClick={this.deleteNotification.bind(this, id, time)}>
             DELETE
-          </a>
-        </div>
+          </button>
+          {
+            this.state.showUpdate
+              ? (
+                <div 
+                  className="toggle-update"
+                  ref={(element) => {
+                    this.dropdownUpdate = element;
+                  }}>
+
+                  <label>Time</label>
+                    <input name="time" type="text" placeholder="1528239669" onChange={this.editNotification} value={time} />
+                  <label>Question</label>
+                    <select ref="question" value={question} name="question" onChange={question} >
+                    {questionOptions}
+                    </select>
+                  <button href="#" onClick={this.updateNotification.bind(this)}>
+                    Save  
+                  </button>
+                </div>
+              )
+              : (
+                null
+                )
+          }
       </div>
-    );
+    </div>
+   );
   }
 }
 
 NotificationItem.propTypes = {
-  notifications: PropTypes.object
+  notification: PropTypes.object
 };
 
 export default NotificationItem;

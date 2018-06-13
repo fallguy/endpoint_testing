@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 class AddSurvey extends Component {
 
   async handleSubmit(e){
-    const { survey } = this.props.surveys;
+    //const { survey } = this.props.surveys;
     const surveyId = this.props.surveys.length + 1;
     const question = this.refs.question.value;
     const category = this.refs.category.value;
