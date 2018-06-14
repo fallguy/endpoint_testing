@@ -6,9 +6,7 @@ import PropTypes from 'prop-types';
 class Notifications extends Component {
   
   deleteNotification(id, time){
-    this.props.onDelete(id);
-    this.props.onDelete(time);
-    console.log(time);
+    this.props.onDelete(id, time);
   }
 
   updateNotification(notification){
@@ -16,11 +14,9 @@ class Notifications extends Component {
   }
 
   render() {
-    console.log(this.props);
     let notificationItems;
     if (this.props.notifications.length > 0) {
       notificationItems = this.props.notifications.map(notification => {
-        console.log(notification);
         return (
           <NotificationItem time={this.props.time} surveys={this.props.surveys} onDelete={this.deleteNotification.bind(this)} onUpdate={this.updateNotification.bind(this)} key={notification.time} notification={notification} />
         )

@@ -24,7 +24,6 @@ class App extends Component {
     let categories = await API.get('surveysCRUD', `/surveys/categories`);
     let widgets = await API.get('surveysCRUD', `/surveys/widgets`);
     let notification = await API.get('notifyCRUD', `/notify`);
-    console.log(notification);
     //let userId = await API.get('notifyCRUD', `/surveys/`);
     //let surveyIds = {data: []};
     //Object.keys(survey).map(e => {
@@ -43,13 +42,9 @@ class App extends Component {
       console.log(e);
     }
     let survey = this.state.survey;
-    console.log(survey);
-    console.log(id)
     let index = survey.findIndex(function(x){
       return x.id === id
     });
-    console.log(index)
-    console.log(id)
     survey.splice(index, 1);
     this.setState({survey:survey})
   }
@@ -109,7 +104,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state)
 
     return (
       <div className="App">

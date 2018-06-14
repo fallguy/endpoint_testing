@@ -17,7 +17,6 @@ class SurveyItem extends Component {
     this.showUpdate = this.showUpdate.bind(this);
     this.closeUpdate = this.closeUpdate.bind(this);
 
-    // console.log(this);
   }
 
   deleteSurvey(id) {
@@ -60,7 +59,7 @@ class SurveyItem extends Component {
   }
 
   render() {
-    console.log(this.props);
+    let id = this.props.survey.id;
     let question = this.props.survey.question;
     let category = this.props.survey.category;
     let widget = this.props.survey.widget;
@@ -81,7 +80,7 @@ class SurveyItem extends Component {
           </button>          
           <button className="list-item DELETE"
             href="#"
-            onClick={this.deleteSurvey.bind(this, this.props.survey.id)}
+            onClick={this.deleteSurvey.bind(this, id)}
           >
             DELETE
           </button>

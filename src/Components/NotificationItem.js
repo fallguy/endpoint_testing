@@ -17,13 +17,10 @@ class NotificationItem extends Component {
     this.showUpdate = this.showUpdate.bind(this);
     this.closeUpdate = this.closeUpdate.bind(this);
 
-    // console.log(this);
   }
 
   deleteNotification(id, time) {
-    this.props.onDelete(id);
-    this.props.onDelete(time);
-    console.log(time);
+    this.props.onDelete(id, time);
   }
 
   showUpdate(event) {
@@ -58,7 +55,6 @@ class NotificationItem extends Component {
   }
 
   render() {
-    console.log(this.props);
     let id = this.props.notification.id
     let time = this.props.notification.time;
     let question = this.props.surveys.question;
