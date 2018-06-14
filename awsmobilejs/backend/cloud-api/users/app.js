@@ -12,7 +12,7 @@ var AWS = require('aws-sdk')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 const cognitoIdentityService = new AWS.CognitoIdentityServiceProvider({region: process.env.REGION});
 const params = {
-  "UserPoolId": "us-east-2_t35rIItT3"
+  "UserPoolId": "us-west-2_CV1jywsqB"
 };
 // declare a new express app
 var app = express()
