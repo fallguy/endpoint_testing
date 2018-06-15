@@ -14,11 +14,9 @@ class Surveys extends Component {
   }
 
   render() {
-    console.log(this.props);
     let surveyItems;
     if (this.props.surveys) {
       surveyItems = this.props.surveys.map(survey => {
-        console.log(survey);
         return (
           <SurveyItem category={this.props.categories} widget={this.props.widgets}  onDelete={this.deleteSurvey.bind(this)} onUpdate={this.updateSurvey.bind(this)} key={survey.question} survey={survey} />
         )

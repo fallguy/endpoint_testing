@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import Surveys from './Components/Surveys';
 import AddSurvey from './Components/AddSurvey';
-import SurveyItem from './Components/SurveyItem';
 import Notifications from './Components/Notifications';
 import AddNotification from './Components/AddNotification';
-import NotificationItem from './Components/NotificationItem';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -19,7 +17,7 @@ Amplify.configure(aws_exports);
   }
 
 class App extends Component {
-  state = { survey: [], categories: {data: []}, widgets: {data:[]}, notification: [], userIds: {data: []}, surveyIds: {data: []} };
+  state = { survey: [], categories: {data: []}, widgets: {data:[]}, notification: [] };
   
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
@@ -29,13 +27,11 @@ class App extends Component {
     let users = await API.get('users', `/users`);
     console.log(users)
     //let userId = await API.get('notifyCRUD', `/surveys/`);
-    let surveyIds = {data: []};
-    Object.keys(survey).map(e => {
-      surveyIds.data.push(`${survey[e].id}`);
-    })
-    console.log(surveyIds);
-    console.log(categories);
-    this.setState({ survey, categories, widgets, notification, surveyIds});
+    //let surveyIds = {data: []};
+    //Object.keys(survey).map(e => {
+    //  surveyIds.data.push(`${survey[e].id}`);
+    //})
+    this.setState({ survey, categories, widgets, notification });
   }
 
   async handleDeleteSurvey(id){
@@ -48,19 +44,15 @@ class App extends Component {
       console.log(e);
     }
     let survey = this.state.survey;
-    console.log(survey);
-    console.log(id)
     let index = survey.findIndex(function(x){
       return x.id === id
     });
-    console.log(index)
-    console.log(id)
     survey.splice(index, 1);
     this.setState({survey:survey})
   }
 
-  async handleDeleteNotification(id){
-    const path = '/notify/object/' + id;
+  async handleDeleteNotification(id, time){
+    const path = '/notify/object/' + id + '/' + time;
     try {
       const apiResponse = await API.del('notifyCRUD', path );
       console.log('response from deleting notify: ' + apiResponse);
@@ -69,13 +61,9 @@ class App extends Component {
       console.log(e);
     }
     let notification = this.state.notification;
-    console.log(notification);
-    console.log(id)
     let index = notification.findIndex(function(x){
       return x.id === id
     });
-    console.log(index)
-    console.log(id)
     notification.splice(index, 1);
     this.setState({notification:notification})
   }
@@ -118,15 +106,14 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state)
 
     return (
       <div className="App">
       <ul>
-      
       <AddNotification notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
-      <Notifications notifications={this.state.notification} surveys={this.state.survey} surveyIds={this.state.surveyIds} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
-      <NotificationItem notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
+      <div className="ExistingNotifications">
+      <Notifications notifications={this.state.notification} time={this.state.time} surveys={this.state.survey} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
+      </div>
       </ul>
       <ul>
       <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
@@ -141,41 +128,3 @@ class App extends Component {
 }
 
 export default withAuthenticator(App);
-//awsmobile cloud-api invoke surveysCRUD POST /surveys '{"body": {"category": "happiness","widgets": "Mood Slider", "id": 1, "question": "Learn more Amplify"}}'
-// Adding lambda function code on: 
-// /Users/frank.chau/Sites/my-app/awsmobilejs/backend/cloud-api/Surveys/
-// ...
-// Path to be used on API for get and remove an object should be like:
-// /Surveys/object/:id
-
-// Path to be used on API for list objects on get method should be like:
-// /Surveys
-
-// JSON to be used as data on put request should be like:
-// {
-//   "category": "INSERT VALUE HERE",
-//   "widgets": "INSERT VALUE HERE",
-//   "question": "INSERT VALUE HERE",
-//   "id": "INSERT VALUE HERE"
-// }
-// To test the api from the command line (after awsmobile push) use this commands
-// awsmobile cloud-api invoke SurveysCRUD <method> <path> [init]
-
-// Adding lambda function code on: 
-// /Users/frank.chau/Sites/my-app/awsmobilejs/backend/cloud-api/surveys/
-// ...
-// Path to be used on API for get and remove an object should be like:
-// /surveys/object/:id
-
-// Path to be used on API for list objects on get method should be like:
-// /surveys/:id
-
-// JSON to be used as data on put request should be like:
-// {
-//   "category": "INSERT VALUE HERE",
-//   "question": "INSERT VALUE HERE",
-//   "widget": "INSERT VALUE HERE",
-//   "id": "INSERT VALUE HERE"
-// }
-// To test the api from the command line (after awsmobile push) use this commands
-// awsmobile cloud-api invoke surveysCRUD <method> <path> [init]

@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 class AddNotification extends Component {
 
   async handleSubmit(e){
-    const { notification } = this.props.notifications;
+    //const { notification } = this.props.notifications;
     const notificationId = this.props.notifications.length + 1;
     //const userId = this.refs.userId.length + 1;
     const surveyId = this.refs.surveyId;
-    const time = this.refs.time.value;
-    const newNotification = { "id": notificationId.toString(), "surveyId": surveyId.toString(), "time": time};
+    const time = parseInt(this.refs.time.value);
+    const newNotification = { "id": notificationId.toString(), "surveyId": surveyId.toString(), "time": parseInt(time)};
 
     console.log('Submitted: '); //this.notificationId + ' ' + this.userId + ' ' this.surveyId ' ' this.time + ' ');
     if (this.refs.time.value === ''){
@@ -20,7 +20,7 @@ class AddNotification extends Component {
         id: uuid.v4(),
         //userId: this.refs.userId.value,
         surveyId: this.refs.surveyId.value,
-        time: this.refs.time.value,
+        time: parseInt(this.refs.time.value),
       }}, function(){
         // console.log('Submitted: ' + this.props.props);
         this.props.addNotification(this.state.newNotification);
@@ -40,7 +40,7 @@ class AddNotification extends Component {
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div>
             <label>Time</label><br />
-            <input type="text" placeholder="1528239669" ref="time"/>
+            <input type="number" placeholder="1528239669" ref="time"/>
           </div>
           <div>
             <label>Question</label><br />
@@ -58,7 +58,6 @@ class AddNotification extends Component {
 }
 
 AddNotification.propTypes = {
-  surveyId: PropTypes.array,
   addNotification: PropTypes.func 
 }
 
