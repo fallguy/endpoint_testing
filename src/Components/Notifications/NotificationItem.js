@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "../index.css";
 
 class NotificationItem extends Component {
   
@@ -42,6 +41,7 @@ class NotificationItem extends Component {
   }
 
   updateNotification(id) {
+    this.props.notification.time = parseInt(this.props.notification.time);
     this.setState({ showUpdate: false }, () => {
       document.removeEventListener('click', this.closeUpdate);
     });

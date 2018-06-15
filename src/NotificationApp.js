@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
-import Surveys from './Components/Surveys/Surveys';
-import AddSurvey from './Components/Surveys/AddSurvey';
 import Notifications from './Components/Notifications/Notifications';
-import AddNotification from './Components/AddNotifications/AddNotification';
+import AddNotification from './Components/Notifications/AddNotification';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -16,7 +14,7 @@ Amplify.configure(aws_exports);
     console.log('Survey inputs are...id: ' )//+ this.id + ' survey: ' + this.survey + ' category: ' + this.categories + ' widget: ' + this.widgets )
   }
 
-class App extends Component {
+class NotificationApp extends Component {
   state = { survey: [], categories: {data: []}, widgets: {data:[]}, notification: [] };
   
   async componentDidMount() {
@@ -32,23 +30,6 @@ class App extends Component {
     //  surveyIds.data.push(`${survey[e].id}`);
     //})
     this.setState({ survey, categories, widgets, notification });
-  }
-
-  async handleDeleteSurvey(id){
-    const path = '/surveys/object/' + id;
-    try {
-      const apiResponse = await API.del('surveysCRUD', path );
-      console.log('response from deleting survey: ' + apiResponse);
-      this.setState({apiResponse});
-    } catch (e) {
-      console.log(e);
-    }
-    let survey = this.state.survey;
-    let index = survey.findIndex(function(x){
-      return x.id === id
-    });
-    survey.splice(index, 1);
-    this.setState({survey:survey})
   }
 
   async handleDeleteNotification(id, time){
@@ -68,19 +49,9 @@ class App extends Component {
     this.setState({notification:notification})
   }
 
-
-  async handleUpdateSurvey(survey){
-    const path = '/surveys';
-    try {
-      const apiUpdate = await API.put('surveysCRUD', path, { body: survey });
-      console.log('response from updating survey: ' + apiUpdate);
-
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   async handleUpdateNotification(notification){
+    let userId = ' ';
+    notification.userId = userId;
     const path = '/notify';
     try {
       const apiUpdate = await API.put('notifyCRUD', path, { body: notification });
@@ -89,13 +60,6 @@ class App extends Component {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  async handleAddSurvey(newSurvey){
-    let survey = this.state.survey;
-    await API.post('surveysCRUD', '/surveys', { body: newSurvey });
-    survey.push(newSurvey);
-    this.setState({ survey }); 
   }
 
   async handleAddNotification(newNotification){
@@ -109,22 +73,15 @@ class App extends Component {
 
     return (
       <div className="App">
-      <ul>
-      <AddNotification notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
-      <div className="ExistingNotifications">
-      <Notifications notifications={this.state.notification} time={this.state.time} surveys={this.state.survey} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
-      </div>
-      </ul>
-      <ul>
-      <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
-
-      <div className="ExistingSurveys">
-      <Surveys surveys={this.state.survey} categories={this.state.categories} widgets={this.state.widgets}  onDelete={this.handleDeleteSurvey.bind(this)} onUpdate={this.handleUpdateSurvey.bind(this)}/>
-      </div>
-      </ul>
+        <ul>
+          <AddNotification notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
+        <div className="ExistingNotifications">
+          <Notifications notifications={this.state.notification} time={this.state.time} surveys={this.state.survey} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
+        </div>
+        </ul>
       </div>
     );
   }
 }
 
-export default withAuthenticator(App);
+export default NotificationApp;

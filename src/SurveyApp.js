@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import Surveys from './Components/Surveys/Surveys';
 import AddSurvey from './Components/Surveys/AddSurvey';
-import Notifications from './Components/Notifications/Notifications';
-import AddNotification from './Components/AddNotifications/AddNotification';
 import './App.css';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
@@ -16,7 +14,7 @@ Amplify.configure(aws_exports);
     console.log('Survey inputs are...id: ' )//+ this.id + ' survey: ' + this.survey + ' category: ' + this.categories + ' widget: ' + this.widgets )
   }
 
-class App extends Component {
+class SurveyApp extends Component {
   state = { survey: [], categories: {data: []}, widgets: {data:[]}, notification: [] };
   
   async componentDidMount() {
@@ -51,40 +49,11 @@ class App extends Component {
     this.setState({survey:survey})
   }
 
-  async handleDeleteNotification(id, time){
-    const path = '/notify/object/' + id + '/' + time;
-    try {
-      const apiResponse = await API.del('notifyCRUD', path );
-      console.log('response from deleting notify: ' + apiResponse);
-      this.setState({apiResponse});
-    } catch (e) {
-      console.log(e);
-    }
-    let notification = this.state.notification;
-    let index = notification.findIndex(function(x){
-      return x.id === id
-    });
-    notification.splice(index, 1);
-    this.setState({notification:notification})
-  }
-
-
   async handleUpdateSurvey(survey){
     const path = '/surveys';
     try {
       const apiUpdate = await API.put('surveysCRUD', path, { body: survey });
       console.log('response from updating survey: ' + apiUpdate);
-
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async handleUpdateNotification(notification){
-    const path = '/notify';
-    try {
-      const apiUpdate = await API.put('notifyCRUD', path, { body: notification });
-      console.log('response from updating notification: ' + apiUpdate);
 
     } catch (e) {
       console.log(e);
@@ -98,23 +67,10 @@ class App extends Component {
     this.setState({ survey }); 
   }
 
-  async handleAddNotification(newNotification){
-    let notification = this.state.notification;
-    await API.post('notifyCRUD', '/notify', { body: newNotification });
-    notification.push(newNotification);
-    this.setState({ notification }); 
-  }
-
   render() {
 
     return (
       <div className="App">
-      <ul>
-      <AddNotification notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
-      <div className="ExistingNotifications">
-      <Notifications notifications={this.state.notification} time={this.state.time} surveys={this.state.survey} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
-      </div>
-      </ul>
       <ul>
       <AddSurvey surveys={this.state.survey} category={this.state.categories} widget={this.state.widgets} addSurvey={this.handleAddSurvey.bind(this)}/>
 
@@ -127,4 +83,4 @@ class App extends Component {
   }
 }
 
-export default withAuthenticator(App);
+export default SurveyApp;

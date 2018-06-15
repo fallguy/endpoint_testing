@@ -18,7 +18,7 @@ class AddNotification extends Component {
     } else {
       this.setState({newNotification:{
         id: uuid.v4(),
-        //userId: this.refs.userId.value,
+        userId: ' ',
         surveyId: this.refs.surveyId.value,
         time: parseInt(this.refs.time.value),
       }}, function(){
