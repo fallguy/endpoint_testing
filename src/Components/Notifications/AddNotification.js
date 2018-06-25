@@ -16,11 +16,12 @@ class AddNotification extends Component {
     if (this.refs.time.value === ''){
       alert('Time is required');
     } else {
+      let findSurvey = this.props.surveys.find(u => u.id === this.refs.surveyId.value);
       this.setState({newNotification:{
         id: uuid.v4(),
-        userId: ' ',
-        surveyId: this.refs.surveyId.value,
-        time: parseInt(this.refs.time.value),
+        user_id: this.refs.users.value,
+        survey: findSurvey,
+        scheduled_at: parseInt(this.refs.time.value),
       }}, function(){
         // console.log('Submitted: ' + this.props.props);
         this.props.addNotification(this.state.newNotification);
@@ -34,6 +35,9 @@ class AddNotification extends Component {
     let questionOptions = this.props.surveys.map(survey => {
       return <option key={survey.id} value={survey.id}> {survey.question}</option>
     });
+    let users = this.props.users.map(users => {
+      return <option key={users.id} value={users.identityid}>{users.email}</option>
+    })
     return (
       <div>
         <h3>Add Notification</h3>
@@ -46,6 +50,13 @@ class AddNotification extends Component {
             <label>Question</label><br />
             <select ref="surveyId">
               {questionOptions}
+            </select>
+          </div> 
+          <br />
+          <div>
+            <label>Users</label><br />
+            <select ref="users">
+              {users}
             </select>
           </div> 
           <br />

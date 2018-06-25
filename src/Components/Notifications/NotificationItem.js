@@ -41,7 +41,7 @@ class NotificationItem extends Component {
   }
 
   updateNotification(id) {
-    this.props.notification.time = parseInt(this.props.notification.time);
+    this.props.notification.scheduled_at = parseInt(this.props.notification.scheduled_at);
     this.setState({ showUpdate: false }, () => {
       document.removeEventListener('click', this.closeUpdate);
     });
@@ -56,8 +56,9 @@ class NotificationItem extends Component {
 
   render() {
     let id = this.props.notification.id
-    let time = this.props.notification.time;
-    let question = this.props.surveys.question;
+    let time = this.props.notification.scheduled_at;
+    let question = this.props.notification.survey.question;
+    let user = this.props.notification.user_id;
     let questionOptions = this.props.surveys.map(survey => {
       return <option key={survey.id} value={survey.id}>{survey.question} {survey.category} {survey.widget}</option>
     });
@@ -66,6 +67,7 @@ class NotificationItem extends Component {
         <div>
           <span className="list-item time">{time}{" "}</span>
           <span className="list-item question">{question}</span>
+          <span className="list-item question">{user}</span>
           <button className="list-item UPDATE" href="#" onClick={this.showUpdate.bind(this, id)}>
             UPDATE
           </button>
@@ -83,7 +85,7 @@ class NotificationItem extends Component {
                   }}>
 
                   <label>Time</label>
-                    <input name="time" type="text" placeholder="1528239669" onChange={this.editNotification} value={time} />
+                    <input name="scheduled_at" type="text" placeholder="1528239669" onChange={this.editNotification} value={time} />
                   <label>Question</label>
                     <select ref="question" value={question} name="question" onChange={question} >
                     {questionOptions}
