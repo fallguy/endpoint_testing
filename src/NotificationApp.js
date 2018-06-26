@@ -30,7 +30,7 @@ class NotificationApp extends Component {
     //Object.keys(survey).map(e => {
     //  surveyIds.data.push(`${survey[e].id}`);
     //})
-    this.setState({ survey, categories, widgets, notification, users});
+    this.setState({ survey, categories, widgets, notification, users });
   }
 
   async handleDeleteNotification(id){
@@ -75,7 +75,7 @@ class NotificationApp extends Component {
     return (
       <div className="App">
         <ul>
-          <AddNotification notifications={this.state.notification} surveys={this.state.survey} users={this.state.users} addNotification={this.handleAddNotification.bind(this)}/>
+          <AddNotification users={this.state.users} notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
         <div className="ExistingNotifications">
           <Notifications notifications={this.state.notification} surveys={this.state.survey} users={this.state.users} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
         </div>

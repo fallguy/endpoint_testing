@@ -56,10 +56,9 @@ class NotificationItem extends Component {
 
   render() {
     let id = this.props.notification.id
-    let scheduled_at = this.props.notification.scheduled_at;
-    console.log(scheduled_at);
-    let question = this.props.surveys.question;
-    let name = this.props.users.username;
+    let time = this.props.notification.scheduled_at;
+    let question = this.props.notification.survey.question;
+    let user = this.props.notification.user_id;
     let questionOptions = this.props.surveys.map(survey => {
       return <option key={survey.id} value={survey.id}>{survey.question} {survey.category} {survey.widget}</option>
     });
@@ -73,6 +72,7 @@ class NotificationItem extends Component {
           <span className="list-item scheduled_at">{scheduled_at}{" "}</span>
           <span className="list-item name">{name}{" "}</span>
           <span className="list-item question">{question}</span>
+          <span className="list-item question">{user}</span>
           <button className="list-item UPDATE" href="#" onClick={this.showUpdate.bind(this, id)}>
             UPDATE
           </button>
@@ -89,8 +89,8 @@ class NotificationItem extends Component {
                     this.dropdownUpdate = element;
                   }}>
 
-                  <label>Scheduled_At</label>
-                    <input name="scheduled_at" type="text" placeholder="1528239669" onChange={this.editNotification} value={scheduled_at} />
+                  <label>Time</label>
+                    <input name="scheduled_at" type="text" placeholder="1528239669" onChange={this.editNotification} value={time} />
                   <label>Question</label>
                     <select ref="question" value={question} name="question" onChange={question} >
                     {questionOptions}

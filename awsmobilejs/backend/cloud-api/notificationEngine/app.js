@@ -52,8 +52,9 @@ app.use(function(req, res, next) {
 
 ////////////////////////////////////////////////////////////////////
 
+
 // Get list of surveys from Surveys Endpoint
-function getSurveys(req, res) {
+function getSurveys(callback) {
   let queryParams = {
     TableName: surveyTableName
   } 
@@ -62,16 +63,14 @@ function getSurveys(req, res) {
 
   dynamodb.scan(queryParams, (err, data) => {
     if (err) {
-      res.json({error: 'Could not load items: ' + err});
+      callback({error: 'Could not load items: ' + err});
     } else {
-      results = res.json(data.Items);
+      callback(results = data.Items);
     }
   });
 
-  setTimeout(function() {
-    console.log(results);
-    return results;
-  }, 6000);
+  console.log(results);
+  
 }
 
 // Get list of users from Users Endpoint
@@ -90,10 +89,8 @@ function getUsers(req, res) {
     }
   });
 
-  setTimeout(function() {
-    console.log(results);
-    return results;
-  }, 6000);
+  console.log(results);
+  return results;
 }
 
 // Writes the new notification objects to Notify Endpoint 
@@ -108,7 +105,12 @@ function getUsers(req, res) {
  **********************/
 
 app.get('/notificationEngine', function(req, res) {
-  let surveys = getSurveys();
+
+  let surveyResults = getSurveys(function(r){
+    console.log('suh',r);
+    res.json({r});
+  });
+
   let users = getUsers();
 
   // let userId = users.id;
@@ -125,9 +127,6 @@ app.get('/notificationEngine', function(req, res) {
   //res.json(req.apiGateway.event);
   // Return the API Gateway event and query string parameters for example
   //res.json({success: 'got the surveys', url: req.url, body: req.body});
-  setTimeout(function() {
-    res.json({surveys});
-  }, 15000);
 });
 
 //app.get('/notificationEngine/*', function(req, res) {
