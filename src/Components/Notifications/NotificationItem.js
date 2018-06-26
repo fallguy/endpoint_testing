@@ -18,8 +18,8 @@ class NotificationItem extends Component {
 
   }
 
-  deleteNotification(id, time) {
-    this.props.onDelete(id, time);
+  deleteNotification(id) {
+    this.props.onDelete(id);
   }
 
   showUpdate(event) {
@@ -41,7 +41,7 @@ class NotificationItem extends Component {
   }
 
   updateNotification(id) {
-    this.props.notification.time = parseInt(this.props.notification.time);
+    this.props.notification.scheduled_at = parseInt(this.props.notification.scheduled_at);
     this.setState({ showUpdate: false }, () => {
       document.removeEventListener('click', this.closeUpdate);
     });
@@ -56,21 +56,28 @@ class NotificationItem extends Component {
 
   render() {
     let id = this.props.notification.id
-    let time = this.props.notification.time;
+    let scheduled_at = this.props.notification.scheduled_at;
+    console.log(scheduled_at);
     let question = this.props.surveys.question;
+    let name = this.props.users.username;
     let questionOptions = this.props.surveys.map(survey => {
       return <option key={survey.id} value={survey.id}>{survey.question} {survey.category} {survey.widget}</option>
     });
+    console.log(this.props.users.users.Users);
+//    let nameOptions = this.props.users.map(users => {
+  //    return <option key={users.value} value={users.value}>{users.name}</option>
+ //   });
     return (
       <div className="Notifications">
         <div>
-          <span className="list-item time">{time}{" "}</span>
+          <span className="list-item scheduled_at">{scheduled_at}{" "}</span>
+          <span className="list-item name">{name}{" "}</span>
           <span className="list-item question">{question}</span>
           <button className="list-item UPDATE" href="#" onClick={this.showUpdate.bind(this, id)}>
             UPDATE
           </button>
           <button className="list-item DELETE"
-            href="#" onClick={this.deleteNotification.bind(this, id, time)}>
+            href="#" onClick={this.deleteNotification.bind(this, id)}>
             DELETE
           </button>
           {
@@ -82,11 +89,14 @@ class NotificationItem extends Component {
                     this.dropdownUpdate = element;
                   }}>
 
-                  <label>Time</label>
-                    <input name="time" type="text" placeholder="1528239669" onChange={this.editNotification} value={time} />
+                  <label>Scheduled_At</label>
+                    <input name="scheduled_at" type="text" placeholder="1528239669" onChange={this.editNotification} value={scheduled_at} />
                   <label>Question</label>
                     <select ref="question" value={question} name="question" onChange={question} >
                     {questionOptions}
+                    </select>
+                  <label>User</label>
+                    <select ref="name" value={name} name="name" onChange={name} >
                     </select>
                   <button href="#" onClick={this.updateNotification.bind(this)}>
                     Save  

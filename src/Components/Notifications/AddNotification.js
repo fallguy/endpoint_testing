@@ -9,6 +9,7 @@ class AddNotification extends Component {
     const notificationId = this.props.notifications.length + 1;
     //const userId = this.refs.userId.length + 1;
     const surveyId = this.refs.surveyId;
+    
     const time = parseInt(this.refs.time.value);
     const newNotification = { "id": notificationId.toString(), "surveyId": surveyId.toString(), "time": parseInt(time)};
 
@@ -34,20 +35,29 @@ class AddNotification extends Component {
     let questionOptions = this.props.surveys.map(survey => {
       return <option key={survey.id} value={survey.id}> {survey.question}</option>
     });
+    //let nameOptions = this.props.users.map(users => {
+    //  return <option key={users.username} value={users.username}> {users.username}</option>
+    //});
+    console.log(this.props.users)
     return (
       <div>
         <h3>Add Notification</h3>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div>
-            <label>Time</label><br />
-            <input type="number" placeholder="1528239669" ref="time"/>
+            <label>Schedule_At</label><br />
+            <input type="number" placeholder="1528239669" ref="scheduled_at"/>
           </div>
           <div>
             <label>Question</label><br />
             <select ref="surveyId">
               {questionOptions}
             </select>
-          </div> 
+          </div>
+          <div>
+            <label>Name</label><br />
+            <select ref="name">
+            </select>
+          </div>
           <br />
           <input type="submit" value="Submit" />
           <br />

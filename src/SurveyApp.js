@@ -22,8 +22,6 @@ class SurveyApp extends Component {
     let categories = await API.get('surveysCRUD', `/surveys/categories`);
     let widgets = await API.get('surveysCRUD', `/surveys/widgets`);
     let notification = await API.get('notifyCRUD', `/notify`);
-    let users = await API.get('users', `/users`);
-    console.log(users)
     //let userId = await API.get('notifyCRUD', `/surveys/`);
     //let surveyIds = {data: []};
     //Object.keys(survey).map(e => {

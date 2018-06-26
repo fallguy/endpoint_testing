@@ -15,7 +15,7 @@ AWS.config.update({ region: process.env.REGION });
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const mhprefix  = process.env.MOBILE_HUB_DYNAMIC_PREFIX;
-let tableName = "notify";
+let tableName = "wellness";
 const hasDynamicPrefix = true;
 
 const userIdPresent = false;
@@ -24,7 +24,7 @@ const partitionKeyType = "S"
 const sortKeyName = "";
 const sortKeyType = "";
 const hasSortKey = false;
-const path = "/notify";
+const path = "/wellness";
 
 const awsmobile = {}
 
@@ -33,10 +33,6 @@ if (hasDynamicPrefix) {
 } 
 
 const UNAUTH = 'UNAUTH';
-
-//Global Vars for UserId/SurveyId
-let userIds = ['1'];
-let surveyIds = ['1'];
 
 // declare a new express app
 var app = express()
@@ -56,48 +52,25 @@ const convertUrlType = (param, type) => {
   }
 }
 
-/********************************
- * HTTP Get method for list objects *
- ********************************/
-app.get('/notify', function (req, res) {
-
+app.get('/wellness', function(req, res) {
+ 
   let queryParams = {
     TableName: tableName
-  }
+  } 
 
   dynamodb.scan(queryParams, (err, data) => {
     if (err) {
-      res.json({
-        error: 'Could not load items: ' + err
-      });
+      res.json({error: 'Could not load items: ' + err});
     } else {
       res.json(data.Items);
     }
   });
 });
+/********************************
+ * HTTP Get method for list objects *
+ ********************************/
 
-app.get('/notify/user', function (req, res) {
-  dynamodb.query({
-    TableName: tableName,
-    KeyConditions: {
-      userId: {
-        ComparisonOperator: 'EQ',
-        AttributeValueList: [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH],
-      },
-    },
-  }, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        message: 'Could not load data',
-      }).end();
-    } else {
-      res.json(data.Items).end();
-    }
-  });
-
-});
-app.get('/notify/:id', function(req, res) {
+app.get('/wellness/:id', function(req, res) {
   var condition = {}
   condition[partitionKeyName] = {
     ComparisonOperator: 'EQ'
@@ -131,7 +104,7 @@ app.get('/notify/:id', function(req, res) {
  * HTTP Get method for get single object *
  *****************************************/
 
-app.get('/notify/object/:id/:time', function(req, res) {
+app.get('/wellness/object/:id', function(req, res) {
   var params = {};
   if (userIdPresent && req.apiGateway) {
     params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
@@ -169,31 +142,7 @@ app.get('/notify/object/:id/:time', function(req, res) {
   });
 });
 
-/************************************
-* HTTP put method for list all objects *
-*************************************/
 
-app.get('/notify', function(req, res) {
- 
-  let queryParams = {
-    TableName: tableName
-  } 
-
-  dynamodb.scan(queryParams, (err, data) => {
-    if (err) {
-      res.json({error: 'Could not load items: ' + err});
-    } else {
-      res.json(data.Items);
-    }
-  });
-});
-
-app.get('/notify/userIds', function(req, res) {
-  res.json({data: userIds})
-});
-app.get('/notify/surveyIds', function(req, res) {
-  res.json({data: surveyIds})
-});
 /************************************
 * HTTP put method for insert object *
 *************************************/
@@ -202,14 +151,6 @@ app.put(path, function(req, res) {
   
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  }
-
-  if (!req.body.userId) {
-    res.json({error: 'invalid userId', url: req.url, body: req.body});
-  }
-
-  if (!req.body.surveyId) {
-    res.json({error: 'invalid surveyId', url: req.url, body: req.body});
   }
 
   let putItemParams = {
@@ -252,7 +193,7 @@ app.post(path, function(req, res) {
 * HTTP remove method to delete object *
 ***************************************/
 
-app.delete('/notify/object/:id/:time', function(req, res) {
+app.delete('/wellness/object/:id', function(req, res) {
   var params = {};
   if (userIdPresent && req.apiGateway) {
     params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;

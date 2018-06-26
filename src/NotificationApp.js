@@ -15,25 +15,26 @@ Amplify.configure(aws_exports);
   }
 
 class NotificationApp extends Component {
-  state = { survey: [], categories: {data: []}, widgets: {data:[]}, notification: [] };
+  state = { survey: [], categories: {data: []}, widgets: {data:[]}, notification: [], users: [] };
   
   async componentDidMount() {
     let survey = await API.get('surveysCRUD', `/surveys`);
     let categories = await API.get('surveysCRUD', `/surveys/categories`);
     let widgets = await API.get('surveysCRUD', `/surveys/widgets`);
     let notification = await API.get('notifyCRUD', `/notify`);
-    let users = await API.get('users', `/users`);
+    let users = await API.get('usersCRUD', `/users`);
     console.log(users)
+    console.log(survey)
     //let userId = await API.get('notifyCRUD', `/surveys/`);
     //let surveyIds = {data: []};
     //Object.keys(survey).map(e => {
     //  surveyIds.data.push(`${survey[e].id}`);
     //})
-    this.setState({ survey, categories, widgets, notification });
+    this.setState({ survey, categories, widgets, notification, users});
   }
 
-  async handleDeleteNotification(id, time){
-    const path = '/notify/object/' + id + '/' + time;
+  async handleDeleteNotification(id){
+    const path = '/notify/object/' + id;
     try {
       const apiResponse = await API.del('notifyCRUD', path );
       console.log('response from deleting notify: ' + apiResponse);
@@ -74,9 +75,9 @@ class NotificationApp extends Component {
     return (
       <div className="App">
         <ul>
-          <AddNotification notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
+          <AddNotification notifications={this.state.notification} surveys={this.state.survey} users={this.state.users} addNotification={this.handleAddNotification.bind(this)}/>
         <div className="ExistingNotifications">
-          <Notifications notifications={this.state.notification} time={this.state.time} surveys={this.state.survey} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
+          <Notifications notifications={this.state.notification} surveys={this.state.survey} users={this.state.users} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
         </div>
         </ul>
       </div>
