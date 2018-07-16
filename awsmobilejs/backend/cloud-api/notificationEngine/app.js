@@ -24,6 +24,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 ////////////////////////////////////////////////////////////////////
 const mhprefix = process.env.MOBILE_HUB_DYNAMIC_PREFIX;
 let surveyTableName = "surveys";
+let userTableName = "users";
 let notifyTableName = "notify";
 const notifyPath = "/notify";
 const hasDynamicPrefix = true;
@@ -33,6 +34,7 @@ var currentDateAndTime = new Date();
 if (hasDynamicPrefix) {
   surveyTableName = mhprefix + '-' + surveyTableName;
   notifyTableName = mhprefix + '-' + notifyTableName;
+  userTableName = mhprefix + '-' + userTableName;
 }
 ////////////////////////////////////////////////////////////////////
 
@@ -51,8 +53,9 @@ app.use(function(req, res, next) {
 
 ////////////////////////////////////////////////////////////////////
 
+
 // Get list of surveys from Surveys Endpoint
-function getSurveys(req, res) {
+function getSurveys(callback) {
   let queryParams = {
     TableName: surveyTableName
   } 
@@ -61,26 +64,42 @@ function getSurveys(req, res) {
 
   dynamodb.scan(queryParams, (err, data) => {
     if (err) {
-      res.json({error: 'Could not load items: ' + err});
+      callback({error: 'Could not load items: ' + err});
     } else {
-      results = res.json(data.Items);
+      callback(results = data.Items);
     }
   });
-
-  return results;
 }
 
-// Get list of users from Users Endpoint
-function getUsers() {
-  cognitoIdentityService.listUsers(params, (err, data) => {
-    if (!err) {
-      console.log('Successfull...');
-      res.json({success: 'get call succeed!', url: req.url, users: data})
-      console.log(JSON.stringify(data));
+function getNotify(callback) {
+  let queryParams = {
+    TableName: notifyTableName
+  }
+
+  let results = {};
+
+  dynamodb.scan(queryParams, (err, data) => {
+    if (err) {
+      callback({error: 'Could not load notify items: ' + err});
     } else {
-      console.log('Error...');
-      res.json({success: 'get false!', url: req.url})
-      console.log(JSON.stringify(err));
+      callback(results = data.Items);
+    }
+  });
+}
+
+//Get list of users from Users Endpoint
+function getUsers(callback) {
+  let queryParams = {
+    TableName: userTableName
+  } 
+
+  let results = {};
+
+  dynamodb.scan(queryParams, (err, data) => {
+    if (err) {
+      callback({error: 'Could not load items: ' + err});
+    } else {
+      callback(results = data.Items);
     }
   });
 }
@@ -97,8 +116,59 @@ function getUsers() {
  **********************/
 
 app.get('/notificationEngine', function(req, res) {
-  let surveys = getSurveys();
-  let users = getUsers();
+  
+  let surveyResults; 
+  getSurveys(function(rs){
+    console.log('suh survey',rs);
+    surveyResults = rs;
+  });
+
+  // let notifyResults = getNotify(function(rn){
+  //   console.log('suh notify',rn)
+  // });
+  let userResults = getUsers(function(ru){
+    console.log('suh user', ru);
+
+    let id = 1111111111111; 
+    let scheduled_at = 1530565200;
+    let user_id = ru.map(a => a.identityid); 
+    console.log('user_id: ', user_id);
+    let widget = surveyResults.map(a => a.widget);
+    console.log('widget: ', widget);
+    let survey_id = surveyResults.map(a => a.survey_id);
+    console.log('survey_id', survey_id);
+    let category = surveyResults.map(a => a.category);
+    console.log('category', category);
+    let question = surveyResults.map(a => a.question);
+    console.log('question', question);
+
+    const newNotification = 
+      { 
+        "scheduled_at": scheduled_at.toString(),
+        "survey":
+        { 
+          "widget": 'mood-slider-2',
+          "survey_id": '2222222222',
+          "category": 'madness-2',
+          "question": 'Whatcha selling'
+        },
+        "user_id": '333333333',
+        "id": id.toString() 
+      }
+
+    let putItemParams = {
+      TableName: notifyTableName,
+      Item: newNotification
+    }
+
+    dynamodb.put(putItemParams, (err, data) => {
+      if(err) {
+        res.json({error: err});
+      } else {
+        res.json({success: 'post call succeed!'})
+      }
+    });
+  });
 
   // let userId = users.id;
   //
@@ -114,9 +184,21 @@ app.get('/notificationEngine', function(req, res) {
   //res.json(req.apiGateway.event);
   // Return the API Gateway event and query string parameters for example
   //res.json({success: 'got the surveys', url: req.url, body: req.body});
-  res.json({surveys});
 });
+app.get('/notificationEngine/users', function(req, res) {
 
+  let queryParams = {
+    TableName: userTableName
+  } 
+
+  dynamodb.scan(queryParams, (err, data) => {
+    if (err) {
+      res.json({error: 'Could not load items: ' + err});
+    } else {
+      res.json(data.Items);
+    }
+  });
+});
 //app.get('/notificationEngine/*', function(req, res) {
 // Add your code here
 //  res.json({success: 'get call succeed!', url: req.url});
