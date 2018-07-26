@@ -24,6 +24,7 @@ class NotificationApp extends Component {
     let notification = await API.get('notifyCRUD', `/notify`);
     let users = await API.get('usersCRUD', `/users`);
     console.log(users)
+    console.log(survey)
     //let userId = await API.get('notifyCRUD', `/surveys/`);
     //let surveyIds = {data: []};
     //Object.keys(survey).map(e => {
@@ -32,8 +33,8 @@ class NotificationApp extends Component {
     this.setState({ survey, categories, widgets, notification, users });
   }
 
-  async handleDeleteNotification(id, time){
-    const path = '/notify/object/' + id + '/' + time;
+  async handleDeleteNotification(id){
+    const path = '/notify/object/' + id;
     try {
       const apiResponse = await API.del('notifyCRUD', path );
       console.log('response from deleting notify: ' + apiResponse);
@@ -76,7 +77,7 @@ class NotificationApp extends Component {
         <ul>
           <AddNotification users={this.state.users} notifications={this.state.notification} surveys={this.state.survey} surveyId={this.state.surveyIds} addNotification={this.handleAddNotification.bind(this)}/>
         <div className="ExistingNotifications">
-          <Notifications notifications={this.state.notification} time={this.state.time} surveys={this.state.survey} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
+          <Notifications notifications={this.state.notification} surveys={this.state.survey} users={this.state.users} onDelete={this.handleDeleteNotification.bind(this)} onUpdate={this.handleUpdateNotification.bind(this)}/>
         </div>
         </ul>
       </div>

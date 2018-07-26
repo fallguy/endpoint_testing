@@ -28,3 +28,10 @@ aws-exports.*
 awsmobilejs/.awsmobile/backend-build
 awsmobilejs/\#current-backend-info
 ~awsmobilejs-*/
+
+#cloud-api
+awsmobilejs/backend/cloud-api/notificationEngine.zip
+awsmobilejs/backend/cloud-api/notificationEngine/eventObject.js
+awsmobilejs/backend/cloud-api/notify.zip
+awsmobilejs/backend/cloud-api/notify/eventObject.js
+awsmobilejs/backend/cloud-api/notify/list.js

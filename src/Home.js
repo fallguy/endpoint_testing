@@ -41,6 +41,7 @@ class Home extends Component {
       <div className="Home">
         <Link to="/notifications">Notifications</Link>
         <Link to="/surveys">Surveys</Link>
+        <Link to="/notification-engine">Notification Engine</Link>
       </div>
     );
   }
