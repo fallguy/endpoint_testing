@@ -56,13 +56,14 @@ class NotificationItem extends Component {
 
   render() {
     let id = this.props.notification.id
-    let time = this.props.notification.scheduled_at;
+    let scheduled_at = this.props.notification.scheduled_at;
     let question = this.props.notification.survey.question;
     let user = this.props.notification.user_id;
+    let name = this.props.notification.name;
     let questionOptions = this.props.surveys.map(survey => {
       return <option key={survey.id} value={survey.id}>{survey.question} {survey.category} {survey.widget}</option>
     });
-    console.log(this.props.users.users.Users);
+    //console.log(this.props.users.users.Users);
 //    let nameOptions = this.props.users.map(users => {
   //    return <option key={users.value} value={users.value}>{users.name}</option>
  //   });
@@ -90,7 +91,7 @@ class NotificationItem extends Component {
                   }}>
 
                   <label>Time</label>
-                    <input name="scheduled_at" type="text" placeholder="1528239669" onChange={this.editNotification} value={time} />
+                    <input name="scheduled_at" type="text" placeholder="1528239669" onChange={this.editNotification} value={scheduled_at} />
                   <label>Question</label>
                     <select ref="question" value={question} name="question" onChange={question} >
                     {questionOptions}

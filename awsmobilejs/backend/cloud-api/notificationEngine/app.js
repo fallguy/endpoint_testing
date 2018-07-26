@@ -6,11 +6,13 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
+const uuidv4 = require('uuid/v4');
 //import { API } from 'aws-amplify';
 var express = require('express')
 var bodyParser = require('body-parser')
 var AWS = require('aws-sdk')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+var JulianDate = require('julian-date')
 //var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 
 const cognitoIdentityService = new AWS.CognitoIdentityServiceProvider({region: process.env.REGION});
@@ -34,6 +36,7 @@ var currentDateAndTime = new Date();
 if (hasDynamicPrefix) {
   surveyTableName = mhprefix + '-' + surveyTableName;
   notifyTableName = mhprefix + '-' + notifyTableName;
+  userTableName = mhprefix + '-' + userTableName;
 }
 ////////////////////////////////////////////////////////////////////
 
@@ -68,13 +71,26 @@ function getSurveys(callback) {
       callback(results = data.Items);
     }
   });
-
-  console.log(results);
-  
 }
 
-// Get list of users from Users Endpoint
-function getUsers(req, res) {
+function getNotify(callback) {
+  let queryParams = {
+    TableName: notifyTableName
+  }
+
+  let results = {};
+
+  dynamodb.scan(queryParams, (err, data) => {
+    if (err) {
+      callback({error: 'Could not load notify items: ' + err});
+    } else {
+      callback(results = data.Items);
+    }
+  });
+}
+
+//Get list of users from Users Endpoint
+function getUsers(callback) {
   let queryParams = {
     TableName: userTableName
   } 
@@ -83,15 +99,24 @@ function getUsers(req, res) {
 
   dynamodb.scan(queryParams, (err, data) => {
     if (err) {
-      res.json({error: 'Could not load items: ' + err});
+      callback({error: 'Could not load items: ' + err});
     } else {
-      results = res.json(data.Items);
+      callback(results = data.Items);
     }
   });
-
-  console.log(results);
-  return results;
 }
+
+// the hashifier of a string
+String.prototype.hashCode = function() {
+  var hash = 0, i, chr;
+  if (this.length === 0) return hash;
+  for (i = 0; i < this.length; i++) {
+    chr   = this.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
 
 // Writes the new notification objects to Notify Endpoint 
 //function writesToNotifyEndPoint(newNotification) {
@@ -106,29 +131,116 @@ function getUsers(req, res) {
 
 app.get('/notificationEngine', function(req, res) {
 
-  let surveyResults = getSurveys(function(r){
-    console.log('suh',r);
-    res.json({r});
+  // let notifyResults = getNotify(function(rn){
+  //   console.log('suh notify',rn)
+  // });
+
+  let userResults;
+  getUsers(function(ru){
+    console.log('suh user', ru);
+    userResults = ru;
+
+    let surveyResults; 
+    getSurveys(function(rs){
+      console.log('suh survey',rs);
+      surveyResults = rs;
+
+      let j = new JulianDate(); // Get the julian date
+      let jd = j.julian(); // Get the julian days. Example: 5543.5
+      let modular = 2; // total number of types of surveys
+
+      let scheduled_at = jd;
+      //let scheduled_at = 1530565200;
+      let user_id = ru.map(a => a.identityid); 
+      console.log('user_id: ', user_id);
+      let widget = surveyResults.map(a => a.widget);
+      console.log('widget: ', widget);
+      let survey_id = surveyResults.map(a => a.id);
+      console.log('survey_id ', survey_id);
+      let category = surveyResults.map(a => a.category);
+      console.log('category ', category);
+      let question = surveyResults.map(a => a.question);
+      console.log('question ', question);
+
+      let arrayOfNotificationObjects = [];
+      // Iterate through all users and add new field groupIndex to each user
+      // based on the mod of their hash value 
+      for (let i = 0; i < user_id.length; i++) {
+        let preHashUserId = user_id[i];
+        let hashUserId = preHashUserId.hashCode();
+        console.log('hashUserId:', hashUserId)
+        if (hashUserId % modular == 0) {
+          user_id[i].groupIndex = 0;
+        } else 
+          user_id[i].groupIndex = 1;
+      }
+      // Modular the Julian date and create newNotification
+      for (let i = 0; i < user_id.length; i++) {
+        let julianDateHashConditional = (i + (jd % modular) % modular) 
+        if ( julianDateHashConditional == 0 && user_id[i].groupIndex == 0) {
+          createNewNotification(user_id[i], surveyResults[0]);
+        } else createNewNotification(user_id[i], surveyResults[1]);
+      }
+
+      function createNewNotification(userIdOfExpectedGroupIndex, surveyObject){
+        let newNotification = 
+          { 
+            'scheduled_at': scheduled_at,
+            'survey':
+            { 
+              'widget': surveyObject.widget,
+              'survey_id': surveyObject.id,
+              'category': surveyObject.category,
+              'question': surveyObject.question
+            },
+            'user_id': userIdOfExpectedGroupIndex.toString(),
+            'id': uuidv4().toString() 
+          }
+        arrayOfNotificationObjects.push(newNotification);
+      };
+
+      console.log(arrayOfNotificationObjects);
+      let requestItems = arrayOfNotificationObjects.map(n => {
+        return {
+          PutRequest: {
+            Item: n
+          }
+        }
+      });
+
+      let params = {
+        RequestItems: {}
+      }
+
+      params.RequestItems[notifyTableName] = requestItems;
+
+      res.json("You done here.")
+      //dynamodb.batchWrite(params, (err, data) => {
+        //console.log(err);
+       // if(err) {
+       //   res.json({error: err});
+       // } else {
+       //   res.json({success: 'post call succeed!'})
+       // }
+      //});
+
+    }); // end surveyResults 
+  }); // end of userResults
+}); // end of app.get
+app.get('/notificationEngine/users', function(req, res) {
+
+  let queryParams = {
+    TableName: userTableName
+  } 
+
+  dynamodb.scan(queryParams, (err, data) => {
+    if (err) {
+      res.json({error: 'Could not load items: ' + err});
+    } else {
+      res.json(data.Items);
+    }
   });
-
-  let users = getUsers();
-
-  // let userId = users.id;
-  //
-  // let userLength = users.length;
-  // for (var i = 0; i < usersLength; i++) {
-  //  console.log(users);
-  // }
-  //
-  //const newNotification = {"id": notificationId.toString(), "surveyId": surveyId.toString(), "scheduled_at": parseInt(scheduled_at)}; 
-  // writesToNotifyEndPoint(newNotification);
-  //  
-  // Return the API Gateway event and query string parameters for example
-  //res.json(req.apiGateway.event);
-  // Return the API Gateway event and query string parameters for example
-  //res.json({success: 'got the surveys', url: req.url, body: req.body});
 });
-
 //app.get('/notificationEngine/*', function(req, res) {
 // Add your code here
 //  res.json({success: 'get call succeed!', url: req.url});
