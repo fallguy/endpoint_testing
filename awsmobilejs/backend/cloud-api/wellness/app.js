@@ -53,6 +53,7 @@ const convertUrlType = (param, type) => {
 }
 
 app.get('/wellness', function(req, res) {
+  console.log('wellness endpoint hit');
  
   let queryParams = {
     TableName: tableName
@@ -66,6 +67,66 @@ app.get('/wellness', function(req, res) {
     }
   });
 });
+
+app.get('/wellness/user', function (req, res) {
+  var userid = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  console.log(userid)
+  let queryParams = {
+    TableName: tableName,
+    IndexName: 'user_id',
+    KeyConditions: {
+      user_id: {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [userid],
+      },
+    },
+  }
+  
+  dynamodb.query(queryParams, (err, data) => {
+    if (err) {
+      res.json({error: 'Could not load items: ' + err});
+    } else {
+      console.log(data);
+      res.json(data.Items);
+    }
+  });
+
+});
+
+// returns last 30 days of wellness data for the user
+app.get('/wellness/user/from', function (req, res) {
+  console.log('from endpoint hit');
+  var userid = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  let queryParams = {
+    TableName: tableName,
+    IndexName: 'user_id',
+    KeyConditions: {
+      user_id: {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [userid],
+      },
+    },
+  }
+  dynamodb.query(queryParams, (err, data) => {
+    if (err) {
+      res.json({error: 'Could not load items: ' + err});
+    } else {
+      var dropcount = 0;
+      var sendMe = [];
+      for(i = 0; i < data.Items.length; i++) {
+        var item = data.Items[i];
+        if(item.answered_at >= ((Date.now() / 1000) - 2592000)) {
+          sendMe.push(item);
+        } else {
+          dropcount++;
+        }
+      }
+      console.log('number of items dropped: ' + dropcount);
+      res.json(sendMe).end();
+    }
+  });
+});
+
 /********************************
  * HTTP Get method for list objects *
  ********************************/
