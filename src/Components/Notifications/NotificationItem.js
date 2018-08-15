@@ -55,9 +55,14 @@ class NotificationItem extends Component {
   }
 
   render() {
+    
     let id = this.props.notification.id
     let time = this.props.notification.scheduled_at;
-    let question = this.props.notification.survey.question;
+    
+    let question = ""
+    if(this.props.notification.survey){
+      question = this.props.notification.survey.question;
+    }
     let user = this.props.notification.user_id;
     let questionOptions = this.props.surveys.map(survey => {
       return <option key={survey.id} value={survey.id}>{survey.question} {survey.category} {survey.widget}</option>
