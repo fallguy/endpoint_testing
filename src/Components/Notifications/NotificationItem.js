@@ -57,7 +57,7 @@ class NotificationItem extends Component {
   render() {
     let id = this.props.notification.id
     let time = this.props.notification.scheduled_at;
-
+    let question = ""
     if(this.props.notification.survey){
       question = this.props.notification.survey.question;
     }
