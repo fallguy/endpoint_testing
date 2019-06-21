@@ -1,0 +1,63 @@
+module.exports = {
+    "resource": "/notify",
+    "path": "/notify",
+    "httpMethod": "POST",
+    "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "US",
+        "content-type": "application/json; charset=UTF-8",
+        "Host": "m2tqk19m47.execute-api.us-west-2.amazonaws.com",
+        "origin": "http://localhost:3000",
+        "Referer": "http://localhost:3000/notifications",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
+        "Via": "2.0 4348c0c454083374c2bcb41d878f5dd5.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "y7VO5Gmpw2io7S3McAIdlJT8giIBKw2CajGFUj0RBP4JunMMdgqcXA==",
+        "x-amz-date": "20180716T004327Z",
+        "x-amz-security-token": "AgoGb3JpZ2luENT//////////wEaCXVzLXdlc3QtMiKAAifiO3XKAizYEGF/mTLeCZX+Je16nM8/Wds6/T8fZ9uZwXiGPgPZm1Mq4pa9+7CXSNl9o6yEO3GNB9zUekCHqBOKmQmGxG5W19dpFGoiroXn9GNSBGMeYfGLoWm1Jmjhd4WMahtoAnV1Yi2H7xksDz5vRnZ09MRDo+JmH/KH+657FhH45SQpWYvYqYKFKrxaFwXokv9C0z/0acMYttdmAfWgaXHuyfTCBkfQ+kdyQf9k2XviRt47f0pnh9a4NEQZI/Q8i7lTpkLr/6Ywqt5SRHrCFfGOuqg+7Lo0csP+V4ksRV0Hmau+9D3dMJ1x226kcZO1+O4wHNtCDNxsCd9d1UgqrwUImv//////////ARAAGgw5ODA4ODY5MjQ0NTEiDHNii1HgpfzoyUbqqyqDBTsjSJGguDQdRLVqscjIPd8I2omZCAMBSLwBy2YucjygKUtQux3MP8pFOXZg1r+BL7Z5BgGv9PMkvNh7TOJjG/bkiiGiIe8DhIq5xCnL4AR+pZXH5fVcOmZCIsVW7ce8qiM9NxlkIy5/33ljQ++8NsUCRjjtAXYnds8vYF/RmU24OOHBnqUfAUZsG+DPwHGmAQ67mbHCPGn1z9+7rtQVIKJqdkv4neB9E8u8lTzDqwNEWdCpw2E7ngHmlpi6gXoDfhEoPMdIVaR6gFyTnsXVsOwd8UC5tTipSxtQWMZQH52+vK+FTBZ1sdN4geWfbuFNGtwZAaIGWSZS2vhGEXAaobYW1p18uOGddaX7WhmbYryi247ZNqyrHPhHUVRIz2y4/JgMshlrM9eehltmscWcpLPF72hb6VFuR9sEuSzcyrfuyNyocpxbA0sogIoFl0BPa+zkCtAZ+zPS/DZ/xi8P1NKBb3adnqS8b1nG6dV50QETQvyN+BRAJtBsOGB9IvaE2cYS0+yq3NkJ9acPNKA7u5fB9kmb338PStkuSrcm3e3ZK4yKvKN+2ykfYxoSn9hB5fSFffx9JWSKC5HLowTRb+VSXY3X5b99wH1esMHGenv+O6GwSbwDJgOZxRnR2+G5zObs/zJQ5t78dYZP+wpQ3avxXnP5qme1LMlyQ6I8QhklaUf6BPfb7Hx3pBH3UlBDp/YarhfV3FujIWdOE2x5nr9CDMktpPDAKBm/xI9m01Xgh3sOlJBc15e+pIerPb9z6k42vzSZKjjlIMf4DvkApoBaNMTLVHcgvSm9tP0/GIXzYJAFOcmv8zZZFQf7hSz4m7wrCxR2gKjXgJ1PBanhPEszkXUwjdSv2gU=",
+        "X-Amzn-Trace-Id": "Root=1-5b4bea30-f3ff34a0d32774e06bcce9cc",
+        "X-Forwarded-For": "66.214.146.106, 205.251.214.19",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "queryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": {
+        "stage": "Development"
+    },
+    "requestContext": {
+        "resourceId": "7ekjhu",
+        "resourcePath": "/notify",
+        "httpMethod": "POST",
+        "extendedRequestId": "KGGHgHaEPHcFmPw=",
+        "requestTime": "16/Jul/2018:00:43:28 +0000",
+        "path": "/Development/notify",
+        "accountId": "980886924451",
+        "protocol": "HTTP/1.1",
+        "stage": "Development",
+        "requestTimeEpoch": 1531701808005,
+        "requestId": "412f3c41-8891-11e8-8c39-c3671b62c337",
+        "identity": {
+            "cognitoIdentityPoolId": "us-west-2:7b29dc84-6cb3-4c24-9243-42d4c84d43c5",
+            "accountId": "980886924451",
+            "cognitoIdentityId": "us-west-2:6e8d5425-9266-41c6-b03d-31196c931688",
+            "caller": "AROAJYDYKV4CK2OZO3KDW:CognitoIdentityCredentials",
+            "sourceIp": "66.214.146.106",
+            "accessKey": "ASIAJFR7PQCHXPXAA4HA",
+            "cognitoAuthenticationType": "authenticated",
+            "cognitoAuthenticationProvider": "cognito-idp.us-west-2.amazonaws.com/us-west-2_OmR6oi2A8,cognito-idp.us-west-2.amazonaws.com/us-west-2_OmR6oi2A8:CognitoSignIn:86adb9d7-d6c0-4eb9-9b98-cf1b9c7b4748",
+            "userArn": "arn:aws:sts::980886924451:assumed-role/happyplaceapp_auth_MOBILEHUB_1689228557/CognitoIdentityCredentials",
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
+            "user": "AROAJYDYKV4CK2OZO3KDW:CognitoIdentityCredentials"
+        },
+        "apiId": "m2tqk19m47"
+    },
+    "body": "{\"id\":\"2b6bf9d0-9fe7-4ab6-aeac-e5a3a95fa62f\",\"user_id\":\"us-west-2:6e8d5425-9266-41c6-b03d-31196c931688\",\"survey\":{\"widget\":\"mood-slider\",\"category\":\"happiness\",\"question\":\"Are you happy?\",\"id\":\"b9c934c6-b08c-479d-a739-8812a842efce\"},\"scheduled_at\":2}",
+    "isBase64Encoded": false
+}

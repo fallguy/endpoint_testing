@@ -101,9 +101,9 @@ amazon-cognito-auth-js@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/amazon-cognito-auth-js/-/amazon-cognito-auth-js-1.2.0.tgz#637f044a3a6114d6d0a87b415157ea36f32431e8"
 
-amazon-cognito-identity-js@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-2.0.11.tgz#64367625e7fd21dbde417fac9d6d234ad291e9e4"
+amazon-cognito-identity-js@^2.0.13:
+  version "2.0.13"
+  resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-2.0.13.tgz#47afd2fb4d5de56bc1c9a842bc5727003a16802a"
   dependencies:
     buffer "4.9.1"
     crypto-browserify "1.0.9"
@@ -346,22 +346,22 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
-aws-amplify-react@^0.1.52:
-  version "0.1.52"
-  resolved "https://registry.yarnpkg.com/aws-amplify-react/-/aws-amplify-react-0.1.52.tgz#0080a10ad14447a4a33ebe3855917c98ed009148"
+aws-amplify-react@^0.1.54:
+  version "0.1.54"
+  resolved "https://registry.yarnpkg.com/aws-amplify-react/-/aws-amplify-react-0.1.54.tgz#1ac5fefcc9441fc2f7eaea237f305c854611b516"
   dependencies:
-    aws-amplify "^0.4.6"
+    aws-amplify "^0.4.8"
     qrcode.react "^0.8.0"
     regenerator-runtime "^0.11.1"
 
-aws-amplify@^0.4.6:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/aws-amplify/-/aws-amplify-0.4.6.tgz#aa6485876ca37c75b600883be52924be78b2840f"
+aws-amplify@^0.4.8:
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/aws-amplify/-/aws-amplify-0.4.8.tgz#82b9028d80fa83597c25eaaeadbfcc3761d4d967"
   dependencies:
     "@types/paho-mqtt" "^1.0.3"
     "@types/zen-observable" "^0.5.3"
     amazon-cognito-auth-js "^1.1.9"
-    amazon-cognito-identity-js "^2.0.11"
+    amazon-cognito-identity-js "^2.0.13"
     aws-sdk "2.198.0"
     axios "^0.17.0"
     graphql "0.11.7"
